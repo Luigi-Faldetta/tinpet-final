@@ -1,18 +1,32 @@
 /* eslint-disable react/prop-types */
-import logo from "../../assets/dog-face-svgrepo-com.svg";
-import "./nav.css";
 
-const Nav = ({ setShowModal, showModal, setIsSignUp, authToken }) => {
+import logo from "../../assets/dog-face-svgrepo-com.svg";
+
+import "./nav.css";
+import React, { useState } from "react";
+
+interface NavProps {
+  setShowModal: (showModal: boolean) => void;
+  showModal: boolean;
+  setIsSignUp: (isSignUp: boolean) => void;
+  authToken: boolean;
+}
+
+const Nav: React.FC<NavProps> = ({
+  setShowModal,
+  showModal,
+  setIsSignUp,
+  authToken,
+}) => {
   const handleClick = () => {
     setShowModal(true);
     setIsSignUp(false);
   };
 
-  // const authToken = true;
   return (
     <nav>
       <div className="logo-container">
-        <img className="logo" src={logo} />
+        <img className="logo" src={logo} alt="Logo" />
       </div>
       {!authToken && (
         <button className="btn-nav" onClick={handleClick} disabled={showModal}>

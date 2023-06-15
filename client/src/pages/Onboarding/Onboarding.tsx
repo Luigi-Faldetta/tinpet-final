@@ -1,17 +1,27 @@
 /* eslint-disable no-unused-vars */
 import Nav from "../../components/Nav/Nav";
-import { useState } from "react";
+import React, { useState, FormEvent, ChangeEvent } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./onboarding.css";
 
-const Onboarding = () => {
+interface FormData {
+  user_id?: string;
+  name: string;
+  age: string;
+  gender: string;
+  url: string;
+  about: string;
+  matches: string[];
+}
+
+const Onboarding: React.FC = () => {
   const navigate = useNavigate();
 
-  const [cookies, setCookies, removeCookies] = useCookies(["user"]);
-  const [formData, setFormData] = useState({
-    user_id: cookies.UserId,
+  const [cookies] = useCookies(["user"]);
+  const [formData, setFormData] = useState<FormData>({
+    user_id: cookies.user?.UserId,
     name: "",
     age: "",
     gender: "",
@@ -20,9 +30,9 @@ const Onboarding = () => {
     matches: [],
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Submited");
+    console.log("Submitted");
     try {
       const response = await axios.put("http://localhost:3000/user", {
         formData,
@@ -34,7 +44,7 @@ const Onboarding = () => {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const name = e.target.name;
 
@@ -46,7 +56,12 @@ const Onboarding = () => {
 
   return (
     <>
-      <Nav setShowModal={() => {}} showModal={false} />
+      <Nav
+        setShowModal={() => {}}
+        showModal={false}
+        setIsSignUp={() => {}}
+        authToken={null}
+      />
       <div className="onboarding">
         <h2>CREATE ACCOUNT</h2>
 

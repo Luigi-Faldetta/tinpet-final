@@ -1,18 +1,31 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+
+import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import "./chat-header.css";
 
-const ChatHeader = ({ user }) => {
-  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+interface User {
+  name: string;
+  url: string;
+}
 
+interface ChatHeaderProps {
+  user: User;
+}
+
+const ChatHeader: React.FC<ChatHeaderProps> = ({ user }) => {
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "UserId",
+    "AuthToken",
+  ]);
   const navigate = useNavigate();
 
   const logout = () => {
     removeCookie("UserId", cookies.UserId);
-    removeCookie("AuthToken", cookies.Authtoken);
+    removeCookie("AuthToken", cookies.AuthToken);
     navigate("/");
   };
 

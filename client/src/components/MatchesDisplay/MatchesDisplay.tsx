@@ -1,12 +1,27 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import "./matches-display.css";
 
-const MatchesDisplay = ({ matches, setClickedUser }) => {
-  const [matchedProfiles, setMatchedProfiles] = useState(null);
+interface User {
+  user_id: string;
+  name: string;
+  url: string;
+}
+
+interface MatchesDisplayProps {
+  matches: User[];
+  setClickedUser: (user: User) => void;
+}
+
+const MatchesDisplay: React.FC<MatchesDisplayProps> = ({
+  matches,
+  setClickedUser,
+}) => {
+  const [matchedProfiles, setMatchedProfiles] = useState<User[] | null>(null);
 
   const getMatches = async () => {
     const matchedUserIds = matches.map(({ user_id }) => user_id);

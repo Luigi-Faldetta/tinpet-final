@@ -1,13 +1,13 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import AuthModal from "../../components/AuthModal/AuthModal";
 import Nav from "../../components/Nav/Nav";
 import "./home.css";
 
-const Home = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(true);
+const Home: React.FC = () => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [isSignUp, setIsSignUp] = useState<boolean>(true);
 
-  const authToken = false;
+  const authToken: boolean = false;
 
   const handleClick = () => {
     console.log("Click!!");
@@ -22,6 +22,7 @@ const Home = () => {
           setShowModal={setShowModal}
           showModal={showModal}
           setIsSignUp={setIsSignUp}
+          authToken={authToken}
         />
         <div className="home">
           <h1 className="primary-title">TinPet</h1>

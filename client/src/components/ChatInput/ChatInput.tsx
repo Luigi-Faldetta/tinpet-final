@@ -1,9 +1,21 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+
+import React, { useState } from "react";
 import axios from "axios";
 import "./chat-input.css";
 
-const ChatInput = ({
+interface User {
+  user_id: string;
+}
+
+interface ChatInputProps {
+  user: User | null;
+  clickedUser: User | null;
+  getUserMessages: () => void;
+  getClickedUsersMessages: () => void;
+}
+
+const ChatInput: React.FC<ChatInputProps> = ({
   user,
   clickedUser,
   getUserMessages,

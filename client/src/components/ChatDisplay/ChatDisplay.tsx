@@ -1,16 +1,35 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+
 import Chat from "../Chat/Chat";
 import ChatInput from "../ChatInput/ChatInput";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./chat-display.css";
 
-const ChatDisplay = ({ user, clickedUSer }) => {
+interface User {
+  user_id: string;
+  name: string;
+  url: string;
+}
+
+interface Message {
+  message: string;
+  timestamp: string;
+}
+
+interface ChatDisplayProps {
+  user: User | null;
+  clickedUser: User | null;
+}
+
+const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
   const userId = user?.user_id;
-  const clickedUserId = clickedUSer?.user_id;
-  const [usersMessages, setUsersMessages] = useState(null);
-  const [clickedUsersMessages, setClickedUsersMessages] = useState(null);
+  const clickedUserId = clickedUser?.user_id;
+  const [usersMessages, setUsersMessages] = useState<Message[] | null>(null);
+  const [clickedUsersMessages, setClickedUsersMessages] = useState<
+    Message[] | null
+  >(null);
 
   const getUsersMessages = async () => {
     try {
@@ -39,23 +58,30 @@ const ChatDisplay = ({ user, clickedUSer }) => {
     getClickedUsersMessages();
   }, []);
 
-  const messages = [];
+  const messages: {
+    name: string;
+    img: string;
+    message: string;
+    timestamp: string;
+  }[] = [];
 
   usersMessages?.forEach((message) => {
-    const formattedMessage = {};
-    formattedMessage["name"] = user?.name;
-    formattedMessage["img"] = user?.url;
-    formattedMessage["message"] = message.message;
-    formattedMessage["timestamp"] = message.timestamp;
+    const formattedMessage = {
+      name: user?.name || "",
+      img: user?.url || "",
+      message: message.message,
+      timestamp: message.timestamp,
+    };
     messages.push(formattedMessage);
   });
 
   clickedUsersMessages?.forEach((message) => {
-    const formattedMessage = {};
-    formattedMessage["name"] = clickedUSer?.name;
-    formattedMessage["img"] = clickedUSer?.url;
-    formattedMessage["message"] = message.message;
-    formattedMessage["timestamp"] = message.timestamp;
+    const formattedMessage = {
+      name: clickedUser?.name || "",
+      img: clickedUser?.url || "",
+      message: message.message,
+      timestamp: message.timestamp,
+    };
     messages.push(formattedMessage);
   });
 
@@ -68,7 +94,7 @@ const ChatDisplay = ({ user, clickedUSer }) => {
       <Chat descendingOrderMessages={descendingOrderMessages} />
       <ChatInput
         user={user}
-        clickedUser={clickedUSer}
+        clickedUser={clickedUser}
         getUserMessages={getUsersMessages}
         getClickedUsersMessages={getClickedUsersMessages}
       />

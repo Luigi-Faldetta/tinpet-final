@@ -1,15 +1,25 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+
+import React, { useState } from "react";
 import ChatDisplay from "../ChatDisplay/ChatDisplay";
 import MatchesDisplay from "../MatchesDisplay/MatchesDisplay";
 import ChatHeader from "../ChatHeader/ChatHeader";
-import { useState } from "react";
 import "./chat-container.css";
 
-const ChatContainer = ({ user }) => {
-  const [clickedUser, setClickedUser] = useState(null);
+interface User {
+  user_id: string;
+  name: string;
+  matches: string[];
+  url: string;
+}
 
-  // console.log('clickeduser', clickedUser);
+interface ChatContainerProps {
+  user: User;
+}
+
+const ChatContainer: React.FC<ChatContainerProps> = ({ user }) => {
+  const [clickedUser, setClickedUser] = useState<User | null>(null);
 
   return (
     <div className="chat-container">
@@ -30,7 +40,7 @@ const ChatContainer = ({ user }) => {
           setClickedUser={setClickedUser}
         />
       )}
-      {clickedUser && <ChatDisplay user={user} clickedUSer={clickedUser} />}
+      {clickedUser && <ChatDisplay user={user} clickedUser={clickedUser} />}
     </div>
   );
 };
