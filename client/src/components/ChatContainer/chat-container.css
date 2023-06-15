@@ -1,0 +1,25 @@
+.chat-container {
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.15) 0px 0px 0px 1px;
+  width: 30%;
+  text-align: left;
+  z-index: 1;
+}
+
+.chat-container .option {
+  border: none;
+  background-color: white;
+  border-bottom: solid 5px #025464;
+  font-size: 1.5rem;
+  margin: 5px;
+  padding: 0.8rem;
+  border-radius: 10px;
+}
+.chat-container button:hover {
+  background-color: lightgray;
+}
+
+.chat-container .option:disabled {
+  border-bottom: solid 5px #cf4040;
+}

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import Onboarding from "./pages/Onboarding";
+import Home from "./pages/Home/Home";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Onboarding from "./pages/Onboarding/Onboarding";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useCookies } from "react-cookie";
 

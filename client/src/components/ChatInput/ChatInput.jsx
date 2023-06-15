@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
+import "./chat-input.css";
 
 const ChatInput = ({
   user,
@@ -8,7 +9,7 @@ const ChatInput = ({
   getUserMessages,
   getClickedUsersMessages,
 }) => {
-  const [textArea, setTextArea] = useState('');
+  const [textArea, setTextArea] = useState("");
   const userId = user?.user_id;
   const clickedUserId = clickedUser?.user_id;
 
@@ -21,25 +22,22 @@ const ChatInput = ({
     };
 
     try {
-      await axios.post('http://localhost:3000/message', { message });
+      await axios.post("http://localhost:3000/message", { message });
       getUserMessages();
       getClickedUsersMessages();
-      setTextArea('');
+      setTextArea("");
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className='chat-input'>
+    <div className="chat-input">
       <textarea
         value={textArea}
         onChange={(e) => setTextArea(e.target.value)}
       ></textarea>
-      <button
-        className='btn-secondary'
-        onClick={addMessage}
-      >
+      <button className="btn-secondary" onClick={addMessage}>
         Submit
       </button>
     </div>

@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import Chat from './Chat';
-import ChatInput from './ChatInput';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import Chat from "../Chat/Chat";
+import ChatInput from "../ChatInput/ChatInput";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import "./chat-display.css";
 
 const ChatDisplay = ({ user, clickedUSer }) => {
   const userId = user?.user_id;
@@ -13,7 +14,7 @@ const ChatDisplay = ({ user, clickedUSer }) => {
 
   const getUsersMessages = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/messages', {
+      const response = await axios.get("http://localhost:3000/messages", {
         params: { userId: userId, correspondingUserId: clickedUserId },
       });
       setUsersMessages(response.data);
@@ -24,7 +25,7 @@ const ChatDisplay = ({ user, clickedUSer }) => {
 
   const getClickedUsersMessages = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/messages', {
+      const response = await axios.get("http://localhost:3000/messages", {
         params: { userId: clickedUserId, correspondingUserId: userId },
       });
       setClickedUsersMessages(response.data);
@@ -42,19 +43,19 @@ const ChatDisplay = ({ user, clickedUSer }) => {
 
   usersMessages?.forEach((message) => {
     const formattedMessage = {};
-    formattedMessage['name'] = user?.name;
-    formattedMessage['img'] = user?.url;
-    formattedMessage['message'] = message.message;
-    formattedMessage['timestamp'] = message.timestamp;
+    formattedMessage["name"] = user?.name;
+    formattedMessage["img"] = user?.url;
+    formattedMessage["message"] = message.message;
+    formattedMessage["timestamp"] = message.timestamp;
     messages.push(formattedMessage);
   });
 
   clickedUsersMessages?.forEach((message) => {
     const formattedMessage = {};
-    formattedMessage['name'] = clickedUSer?.name;
-    formattedMessage['img'] = clickedUSer?.url;
-    formattedMessage['message'] = message.message;
-    formattedMessage['timestamp'] = message.timestamp;
+    formattedMessage["name"] = clickedUSer?.name;
+    formattedMessage["img"] = clickedUSer?.url;
+    formattedMessage["message"] = message.message;
+    formattedMessage["timestamp"] = message.timestamp;
     messages.push(formattedMessage);
   });
 

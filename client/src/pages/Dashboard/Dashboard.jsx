@@ -1,21 +1,22 @@
 /* eslint-disable no-unused-vars */
-import TinderCard from 'react-tinder-card';
-import { useEffect, useState } from 'react';
-import ChatContainer from '../components/ChatContainer';
-import axios from 'axios';
-import { useCookies } from 'react-cookie';
+import TinderCard from "react-tinder-card";
+import { useEffect, useState } from "react";
+import ChatContainer from "../../components/ChatContainer/ChatContainer";
+import axios from "axios";
+import { useCookies } from "react-cookie";
+import "./dashboard.css";
 
 const Dashboard = () => {
   const [user, setUser] = useState({});
   const [users, setUsers] = useState([]);
-  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [lastDirection, setLastDirection] = useState();
 
   const userId = cookies.UserId;
 
   const getUser = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/user', {
+      const response = await axios.get("http://localhost:3000/user", {
         params: { userId },
       });
       setUser(response.data);
@@ -26,7 +27,7 @@ const Dashboard = () => {
 
   const getAllUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/users', {
+      const response = await axios.get("http://localhost:3000/users", {
         params: { userId },
       });
       setUsers(response.data);
@@ -38,7 +39,7 @@ const Dashboard = () => {
   useEffect(() => {
     getUser();
   }, []);
-  
+
   useEffect(() => {
     if (user) {
       getAllUsers();
@@ -47,7 +48,7 @@ const Dashboard = () => {
 
   const updateMatches = async (matchedUserId) => {
     try {
-      await axios.put('http://localhost:3000/addmatch', {
+      await axios.put("http://localhost:3000/addmatch", {
         userId,
         matchedUserId,
       });
@@ -57,47 +58,45 @@ const Dashboard = () => {
     }
   };
 
-
   const swiped = (direction, swipedId) => {
-    if (direction === 'right') {
+    if (direction === "right") {
       updateMatches(swipedId);
     }
     setLastDirection(direction);
   };
 
   const outOfFrame = (name) => {
-    console.log(name + ' left the screen!');
+    console.log(name + " left the screen!");
   };
 
-  
-  const filteredUsers = users.filter(user => user.user_id !== userId);
+  const filteredUsers = users.filter((user) => user.user_id !== userId);
 
   return (
     <>
       {user && (
-        <div className='dashboard'>
+        <div className="dashboard">
           <ChatContainer user={user} />
-          <div className='swiper-container'>
-            <div className='card-container'>
+          <div className="swiper-container">
+            <div className="card-container">
               {filteredUsers.map((user) => (
                 <TinderCard
-                  className='swipe'
+                  className="swipe"
                   key={user.user_id}
                   onSwipe={(dir) => swiped(dir, user.user_id)}
                   onCardLeftScreen={() => outOfFrame(user.name)}
                 >
                   <div
-                    style={{ backgroundImage: 'url(' + user.url + ')' }}
-                    className='card'
+                    style={{ backgroundImage: "url(" + user.url + ")" }}
+                    className="card"
                   >
                     <h3>
-                      {user.name + ', Age: '}
+                      {user.name + ", Age: "}
                       {user.age}
                     </h3>
                   </div>
                 </TinderCard>
               ))}
-              <div className='swipe-info'>
+              <div className="swipe-info">
                 {lastDirection ? <p>You swiped {lastDirection}</p> : <p />}
               </div>
             </div>

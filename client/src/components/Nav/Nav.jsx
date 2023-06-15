@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import logo from '../assets/dog-face-svgrepo-com.svg';
+import logo from "../../assets/dog-face-svgrepo-com.svg";
+import "./nav.css";
 
 const Nav = ({ setShowModal, showModal, setIsSignUp, authToken }) => {
   const handleClick = () => {
@@ -10,18 +11,11 @@ const Nav = ({ setShowModal, showModal, setIsSignUp, authToken }) => {
   // const authToken = true;
   return (
     <nav>
-      <div className='logo-container'>
-        <img
-          className='logo'
-          src={logo}
-        />
+      <div className="logo-container">
+        <img className="logo" src={logo} />
       </div>
       {!authToken && (
-        <button
-          className='btn-nav'
-          onClick={handleClick}
-          disabled={showModal}
-        >
+        <button className="btn-nav" onClick={handleClick} disabled={showModal}>
           Log In
         </button>
       )}
