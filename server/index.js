@@ -1,25 +1,25 @@
-import './loadEnv.js';
-import express from 'express';
-import { MongoClient } from 'mongodb';
-import { v4 } from 'uuid';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import cors from 'cors';
+import "./loadEnv.js";
+import express from "express";
+import { MongoClient } from "mongodb";
+import { v4 } from "uuid";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import cors from "cors";
 
 const URI = process.env.URI;
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+const test = 2;
 const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
 //Sign Up function to new users
-app.post('/signup', async (req, res) => {
+app.post("/signup", async (req, res) => {
   const client = new MongoClient(URI);
   const { email, password } = req.body;
 
@@ -28,13 +28,13 @@ app.post('/signup', async (req, res) => {
 
   try {
     await client.connect();
-    const database = client.db('app-data');
-    const users = database.collection('users');
+    const database = client.db("app-data");
+    const users = database.collection("users");
 
     const existingUser = await users.findOne({ email });
 
     if (existingUser) {
-      return res.status(409).send('User already exists. Please login');
+      return res.status(409).send("User already exists. Please login");
     }
 
     const sanitizedEmail = email.toLowerCase();
@@ -61,14 +61,14 @@ app.post('/signup', async (req, res) => {
 
 // login existing user
 
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
   const client = new MongoClient(URI);
   const { email, password } = req.body;
 
   try {
     await client.connect();
-    const database = client.db('app-data');
-    const users = database.collection('users');
+    const database = client.db("app-data");
+    const users = database.collection("users");
 
     const user = await users.findOne({ email });
 
@@ -84,7 +84,7 @@ app.post('/login', async (req, res) => {
 
       res.status(201).json({ token, userId: user.user_id });
     } else {
-      res.status(400).send('Invalid Credentials');
+      res.status(400).send("Invalid Credentials");
     }
   } catch (error) {
     console.log(error);
@@ -94,14 +94,14 @@ app.post('/login', async (req, res) => {
 });
 
 // get one user
-app.get('/user', async (req, res) => {
+app.get("/user", async (req, res) => {
   const client = new MongoClient(URI);
   const userId = req.query.userId;
 
   try {
     await client.connect();
-    const database = client.db('app-data');
-    const users = database.collection('users');
+    const database = client.db("app-data");
+    const users = database.collection("users");
 
     const query = { user_id: userId };
     const user = await users.findOne(query);
@@ -112,14 +112,14 @@ app.get('/user', async (req, res) => {
 });
 
 //update user matched
-app.put('/addmatch', async (req, res) => {
+app.put("/addmatch", async (req, res) => {
   const client = new MongoClient(URI);
   const { userId, matchedUserId } = req.body;
 
   try {
     await client.connect();
-    const database = client.db('app-data');
-    const users = database.collection('users');
+    const database = client.db("app-data");
+    const users = database.collection("users");
 
     const query = { user_id: userId };
     const updateDocument = {
@@ -135,13 +135,13 @@ app.put('/addmatch', async (req, res) => {
 
 // get all users
 
-app.get('/users', async (req, res) => {
+app.get("/users", async (req, res) => {
   const client = new MongoClient(URI);
 
   try {
     await client.connect();
-    const database = client.db('app-data');
-    const users = database.collection('users');
+    const database = client.db("app-data");
+    const users = database.collection("users");
 
     const returnedUsers = await users.find().toArray();
     res.status(200).send(returnedUsers);
@@ -153,14 +153,14 @@ app.get('/users', async (req, res) => {
 });
 
 // Update account /onboarding
-app.put('/user', async (req, res) => {
+app.put("/user", async (req, res) => {
   const client = new MongoClient(URI);
   const formData = req.body.formData;
 
   try {
     await client.connect();
-    const database = client.db('app-data');
-    const users = database.collection('users');
+    const database = client.db("app-data");
+    const users = database.collection("users");
 
     const query = { user_id: formData.user_id };
     const updateDocument = {
@@ -180,14 +180,14 @@ app.put('/user', async (req, res) => {
   }
 });
 
-app.get('/matchedusers', async (req, res) => {
+app.get("/matchedusers", async (req, res) => {
   const client = new MongoClient(URI);
   const userIds = JSON.parse(req.query.userIds);
 
   try {
     await client.connect();
-    const database = client.db('app-data');
-    const users = database.collection('users');
+    const database = client.db("app-data");
+    const users = database.collection("users");
 
     const pipeline = [
       {
@@ -207,14 +207,14 @@ app.get('/matchedusers', async (req, res) => {
 
 // endpoints for chat
 // Get Messages by from_userId and to_userId
-app.get('/messages', async (req, res) => {
+app.get("/messages", async (req, res) => {
   const { userId, correspondingUserId } = req.query;
   const client = new MongoClient(URI);
 
   try {
     await client.connect();
-    const database = client.db('app-data');
-    const messages = database.collection('messages');
+    const database = client.db("app-data");
+    const messages = database.collection("messages");
 
     const query = {
       from_userId: userId,
@@ -228,14 +228,14 @@ app.get('/messages', async (req, res) => {
 });
 
 // Add a Message to our Database
-app.post('/message', async (req, res) => {
+app.post("/message", async (req, res) => {
   const client = new MongoClient(URI);
   const message = req.body.message;
 
   try {
     await client.connect();
-    const database = client.db('app-data');
-    const messages = database.collection('messages');
+    const database = client.db("app-data");
+    const messages = database.collection("messages");
 
     const insertedMessage = await messages.insertOne(message);
     res.send(insertedMessage);
