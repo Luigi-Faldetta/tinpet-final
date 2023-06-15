@@ -5,7 +5,8 @@ import Onboarding from "./pages/Onboarding";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-//This is a test comment
+//This is a test comment!!
+//This is my second test comment!!
 
 const App = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
