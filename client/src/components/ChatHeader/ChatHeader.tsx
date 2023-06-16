@@ -1,3 +1,4 @@
+//ChatHeader.tsx
 import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useCookies } from "react-cookie";
@@ -5,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 import "./chat-header.css";
 
 interface User {
-  name: string;
-  url: string;
+  ownerName: string;
+  dogName: string;
+  avatar: string;
 }
 
 interface ChatHeaderProps {
@@ -30,9 +32,9 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ user }) => {
     <div className="chat-container-header">
       <div className="profile">
         <div className="img-container">
-          <img src={user.url} alt="user photo" />
+          <img src={user.avatar} alt="user photo" />
         </div>
-        <h3>{user.name}</h3>
+        <h3>{user.ownerName}</h3>
       </div>
       <i className="logout-icon" onClick={logout}>
         <LogoutIcon />
