@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-
 import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useCookies } from "react-cookie";

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import Nav from "../../components/Nav/Nav";
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import { useCookies } from "react-cookie";
@@ -8,12 +7,14 @@ import "./onboarding.css";
 
 interface FormData {
   user_id?: string;
-  name: string;
-  age: string;
+  ownerName: string;
+  dogName: string;
+  ownerAge: number;
+  dogAge: number;
   gender: string;
-  url: string;
   about: string;
   matches: string[];
+  avatar: string;
 }
 
 const Onboarding: React.FC = () => {
@@ -22,12 +23,14 @@ const Onboarding: React.FC = () => {
   const [cookies] = useCookies(["user"]);
   const [formData, setFormData] = useState<FormData>({
     user_id: cookies.user?.UserId,
-    name: "",
-    age: "",
+    ownerName: "",
+    dogName: "",
+    ownerAge: 0,
+    dogAge: 0,
     gender: "",
-    url: "",
     about: "",
     matches: [],
+    avatar: "",
   });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -60,31 +63,51 @@ const Onboarding: React.FC = () => {
         setShowModal={() => {}}
         showModal={false}
         setIsSignUp={() => {}}
-        authToken={null}
+        authToken={false}
       />
       <div className="onboarding">
         <h2>CREATE ACCOUNT</h2>
 
         <form onSubmit={handleSubmit}>
           <section>
-            <label htmlFor="first_name">Name</label>
+            <label htmlFor="first_name">Your name</label>
             <input
               type="text"
-              name="name"
-              id="name"
-              placeholder="Name"
+              name="yourname"
+              id="yourname"
+              placeholder="Your name"
               required={true}
-              value={formData.name}
+              value={formData.ownerName}
               onChange={handleChange}
             />
-            <label>Age</label>
+            <label>your age</label>
             <input
               type="number"
-              name="age"
-              id="age"
-              placeholder="Age"
+              name="yourage"
+              id="yourage"
+              placeholder="Your age"
               required={true}
-              value={formData.age}
+              value={formData.ownerAge}
+              onChange={handleChange}
+            />
+            <label htmlFor="first_name">Your name</label>
+            <input
+              type="text"
+              name="dogname"
+              id="dogname"
+              placeholder="Your dog's name"
+              required={true}
+              value={formData.dogName}
+              onChange={handleChange}
+            />
+            <label>Your dog's age</label>
+            <input
+              type="number"
+              name="dogage"
+              id="dogage"
+              placeholder="Your dog's age"
+              required={true}
+              value={formData.dogAge}
               onChange={handleChange}
             />
             <label>Gender</label>
@@ -98,7 +121,6 @@ const Onboarding: React.FC = () => {
                 checked={formData.gender === "male"}
                 onChange={handleChange}
               />
-
               <label htmlFor="male-gender">Male</label>
               <input
                 id="female-gender"
@@ -112,13 +134,13 @@ const Onboarding: React.FC = () => {
               <label htmlFor="female-gender">Female</label>
             </div>
 
-            <label htmlFor="about">About my Pet</label>
+            <label htmlFor="about">About me and my dog</label>
             <input
               id="about"
               type="text"
               name="about"
               required={true}
-              placeholder="Friendly and playful"
+              placeholder="We are a great bunch"
               value={formData.about}
               onChange={handleChange}
             />
@@ -128,14 +150,16 @@ const Onboarding: React.FC = () => {
           <section>
             <label htmlFor="about">Profile Picture</label>
             <input
-              id="url"
+              id="avatar"
               type="url"
-              name="url"
+              name="avatar"
               required={true}
               onChange={handleChange}
             />
             <div className="photo-container">
-              {formData.url && <img src={formData.url} alt="profile picture" />}
+              {formData.avatar && (
+                <img src={formData.avatar} alt="profile picture" />
+              )}
             </div>
           </section>
         </form>

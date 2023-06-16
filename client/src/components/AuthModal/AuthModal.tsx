@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-
 import CloseIcon from "@mui/icons-material/Close";
 import React, { useState } from "react";
 import axios from "axios";

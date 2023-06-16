@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 import logo from "../../assets/dog-face-svgrepo-com.svg";
 
 import "./nav.css";

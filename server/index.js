@@ -11,9 +11,6 @@ const URI = process.env.URI;
 const app = express();
 app.use(cors());
 app.use(express.json());
-const test = 222;
-const something = "this isS";
-const test2 = 12;
 
 const PORT = process.env.PORT || 3000;
 
