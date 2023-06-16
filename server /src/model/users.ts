@@ -12,27 +12,27 @@ const userSchema = new mongoose.Schema({
   },
   ownerName: {
     type: String,
-    required: true,
+    required: false,
   },
   dogName: {
     type: String,
-    required: true,
+    required: false,
   },
   dogAge: {
     type: Number,
-    required: true,
+    required: false,
   },
   ownerAge: {
     type: Number,
-    required: true,
+    required: false,
   },
   gender: {
     type: String,
-    required: true,
+    required: false,
   },
   avatar: {
     type: String,
-    required: true,
+    required: false,
   },
   matches: {
     type: Array,
@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
   },
   about: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 

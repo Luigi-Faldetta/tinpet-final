@@ -17,7 +17,8 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const users_1 = require("../model/users");
 const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password, ownerName, dogName, ownerAge, dogAge, gender, avatar, matches, about, } = req.body;
+    const { email, password } = req.body;
+    // console.log(req.body);
     const hashedPassword = yield bcrypt_1.default.hash(password, 10);
     try {
         const existingUser = yield users_1.User.findOne({ email });
@@ -28,14 +29,6 @@ const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const data = {
             email: sanitizedEmail,
             password: hashedPassword,
-            ownerName: ownerName,
-            dogName: dogName,
-            ownerAge: ownerAge,
-            dogAge: dogAge,
-            gender: gender,
-            avatar: avatar,
-            matches: matches,
-            about: about,
         };
         const newUser = yield users_1.User.create(data);
         const token = jsonwebtoken_1.default.sign(data, sanitizedEmail, {

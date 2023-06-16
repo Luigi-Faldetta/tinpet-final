@@ -17,27 +17,27 @@ const userSchema = new mongoose_1.default.Schema({
     },
     ownerName: {
         type: String,
-        required: true,
+        required: false,
     },
     dogName: {
         type: String,
-        required: true,
+        required: false,
     },
     dogAge: {
         type: Number,
-        required: true,
+        required: false,
     },
     ownerAge: {
         type: Number,
-        required: true,
+        required: false,
     },
     gender: {
         type: String,
-        required: true,
+        required: false,
     },
     avatar: {
         type: String,
-        required: true,
+        required: false,
     },
     matches: {
         type: Array,
@@ -45,7 +45,7 @@ const userSchema = new mongoose_1.default.Schema({
     },
     about: {
         type: String,
-        required: true,
+        required: false,
     },
 });
 exports.User = mongoose_1.default.model("User", userSchema);
