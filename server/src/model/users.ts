@@ -26,6 +26,22 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  gender: {
+    type: String,
+    required: true,
+  },
+  avatar: {
+    type: String,
+    required: true,
+  },
+  matches: {
+    type: Array,
+    required: false,
+  },
+  about: {
+    type: String,
+    required: true,
+  },
 });
 
 export const User = mongoose.model("User", userSchema);

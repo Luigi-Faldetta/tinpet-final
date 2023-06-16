@@ -1,32 +1,49 @@
 "use strict";
-// app.get("/messages", async (req, res) => {
-//   const { userId, correspondingUserId } = req.query;
-//   const client = new MongoClient(URI);
-//   try {
-//     await client.connect();
-//     const database = client.db("app-data");
-//     const messages = database.collection("messages");
-//     const query = {
-//       from_userId: userId,
-//       to_userId: correspondingUserId,
-//     };
-//     const foundMessages = await messages.find(query).toArray();
-//     res.send(foundMessages);
-//   } finally {
-//     await client.close();
-//   }
-// });
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.postMsg = exports.getMsg = void 0;
+const msg_1 = require("../model/msg");
+const getMsg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("hel");
+    console.log(req.body);
+    //   console.log(req.query);
+    try {
+        // const { userId, correspondingUserId } = req.body;
+        const { fromUser, toUser } = req.body;
+        const query = {
+            $or: [
+                { fromUser, toUser },
+                { fromUser: toUser, toUser: fromUser },
+            ],
+        };
+        const foundMessages = yield msg_1.MessagesTin.find(query);
+        console.log(foundMessages, "here");
+        res.status(201).json({ message: "ok", data: foundMessages });
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+        console.log(error);
+    }
+});
+exports.getMsg = getMsg;
 // // Add a Message to our Database
-// app.post("/message", async (req, res) => {
-//   const client = new MongoClient(URI);
-//   const message = req.body.message;
-//   try {
-//     await client.connect();
-//     const database = client.db("app-data");
-//     const messages = database.collection("messages");
-//     const insertedMessage = await messages.insertOne(message);
-//     res.send(insertedMessage);
-//   } finally {
-//     await client.close();
-//   }
-// });
+const postMsg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const message = req.body;
+        const insertedMessage = yield msg_1.MessagesTin.create(message);
+        res.status(201).json({ message: "ok", data: insertedMessage });
+    }
+    catch (error) {
+        console.log("Post message failed with: ", error.message);
+        res.status(500).send(error.message);
+    }
+});
+exports.postMsg = postMsg;

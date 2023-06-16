@@ -31,5 +31,21 @@ const userSchema = new mongoose_1.default.Schema({
         type: Number,
         required: true,
     },
+    gender: {
+        type: String,
+        required: true,
+    },
+    avatar: {
+        type: String,
+        required: true,
+    },
+    matches: {
+        type: Array,
+        required: false,
+    },
+    about: {
+        type: String,
+        required: true,
+    },
 });
 exports.User = mongoose_1.default.model("User", userSchema);

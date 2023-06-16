@@ -8,160 +8,187 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postUser = void 0;
+exports.getMatchedUsers = exports.updateUser = exports.getAllUsers = exports.updateMatch = exports.getUser = exports.loginUser = exports.postUser = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const users_1 = require("../model/users");
 const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
-    const { email, password, ownerName, dogName, ownerAge, dogAge } = req.body;
-    // const generateUserId = v4();
-    // const hashedPassword = await bcrypt.hash(password, 10);
+    const { email, password, ownerName, dogName, ownerAge, dogAge, gender, avatar, matches, about, } = req.body;
+    const hashedPassword = yield bcrypt_1.default.hash(password, 10);
     try {
-        //   const existingUser = await User.findOne({ email });
-        //   if (existingUser) {
-        //     return res.status(409).send("User already exists. Please login");
-        //   }
+        const existingUser = yield users_1.User.findOne({ email });
+        if (existingUser) {
+            return res.status(409).send("User already exists. Please login");
+        }
         const sanitizedEmail = email.toLowerCase();
         const data = {
-            // email: sanitizedEmail,
-            // password: hashedPassword,
             email: sanitizedEmail,
-            password: password,
+            password: hashedPassword,
             ownerName: ownerName,
             dogName: dogName,
             ownerAge: ownerAge,
             dogAge: dogAge,
+            gender: gender,
+            avatar: avatar,
+            matches: matches,
+            about: about,
         };
         const newUser = yield users_1.User.create(data);
-        // const token = jwt.sign(newUser, sanitizedEmail, {
-        //   expiresIn: 60 * 24,
-        // });
-        // res.status(201).json({ token, userId: generateUserId });
-        res.status(201).json({ message: "ok", data: data.email });
+        const token = jsonwebtoken_1.default.sign(data, sanitizedEmail, {
+            expiresIn: 60 * 24,
+        });
+        res.status(201).json({ message: "ok", data: data.email, token: token });
     }
-    catch (error) {
-        console.log(error);
+    catch (err) {
+        console.log(err);
     }
 });
 exports.postUser = postUser;
 // login existing user
-// app.post("/login", async (req, res) => {
-//   const client = new MongoClient(URI);
-//   const { email, password } = req.body;
-//   try {
-//     await client.connect();
-//     const database = client.db("app-data");
-//     const users = database.collection("users");
-//     const user = await users.findOne({ email });
-//     const correctPassword = await bcrypt.compare(
-//       password,
-//       user.hashed_password
-//     );
-//     if (user && correctPassword) {
-//       const token = jwt.sign(user, email, {
-//         expiresIn: 60 * 24,
-//       });
-//       res.status(201).json({ token, userId: user.user_id });
-//     } else {
-//       res.status(400).send("Invalid Credentials");
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   } finally {
-//     await client.close();
-//   }
-// });
-// app.get("/user", async (req, res) => {
-//   const client = new MongoClient(URI);
-//   const userId = req.query.userId;
-//   try {
-//     await client.connect();
-//     const database = client.db("app-data");
-//     const users = database.collection("users");
-//     const query = { user_id: userId };
-//     const user = await users.findOne(query);
-//     res.status(200).send(user);
-//   } finally {
-//     await client.close();
-//   }
-// });
+const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    try {
+        const user = yield users_1.User.findOne({ email });
+        if (user && user.password) {
+            const correctPassword = yield bcrypt_1.default.compare(password, user.password);
+            if (correctPassword) {
+                const payload = {
+                    userId: user._id,
+                    email: user.email,
+                    // ownerName: user.ownerName,
+                    // dogName: user.dogName,
+                    // ownerAge: user.ownerAge,
+                    // dogAge: user.dogAge,
+                    // gender: user.gender,
+                    // avatar: user.avatar,
+                    // matches: user.matches,
+                };
+                const token = jsonwebtoken_1.default.sign(payload, email, {
+                    expiresIn: 60 * 24,
+                });
+                res.status(201).json({ token: token, userId: user._id });
+            }
+        }
+        else {
+            res.status(400).send("Invalid Credentials");
+        }
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+        console.log(error);
+    }
+});
+exports.loginUser = loginUser;
+const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = req.query.userId;
+    try {
+        const query = { user_id: userId };
+        const user = yield users_1.User.findOne(query);
+        if (user) {
+            const safeUser = {
+                _id: user._id,
+                ownerName: user.ownerName,
+                dogName: user.dogName,
+                dogAge: user.dogAge,
+                ownerAge: user.ownerAge,
+                gender: user.gender,
+                avatar: user.avatar,
+                matches: user.matches,
+                about: user.about,
+            };
+            res.status(200).send(safeUser);
+        }
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+        console.log(error);
+    }
+});
+exports.getUser = getUser;
 // //update user matched
-// app.put("/addmatch", async (req, res) => {
-//   const client = new MongoClient(URI);
-//   const { userId, matchedUserId } = req.body;
-//   try {
-//     await client.connect();
-//     const database = client.db("app-data");
-//     const users = database.collection("users");
-//     const query = { user_id: userId };
-//     const updateDocument = {
-//       $push: { matches: { user_id: matchedUserId } },
-//     };
-//     const user = await users.updateOne(query, updateDocument);
-//     res.send(user);
-//   } finally {
-//     await client.close();
-//   }
-// });
+const updateMatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId, matchedUserId } = req.body;
+    try {
+        const query = { user_id: userId };
+        const updateDocument = {
+            $push: { matches: { user_id: matchedUserId } },
+        };
+        const user = yield users_1.User.updateOne(query, updateDocument);
+        res.status(200).send(user);
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+        console.log(error);
+    }
+});
+exports.updateMatch = updateMatch;
 // get all users
-// app.get("/users", async (req, res) => {
-//   const client = new MongoClient(URI);
-//   try {
-//     await client.connect();
-//     const database = client.db("app-data");
-//     const users = database.collection("users");
-//     const returnedUsers = await users.find().toArray();
-//     res.status(200).send(returnedUsers);
-//   } catch (error) {
-//     console.log(`Error: ${error}`);
-//   } finally {
-//     await client.close();
-//   }
-// });
+const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const returnedUsers = yield users_1.User.find({});
+        res.status(200).send(returnedUsers);
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+        console.log(error);
+    }
+});
+exports.getAllUsers = getAllUsers;
 // // Update account /onboarding
-// app.put("/user", async (req, res) => {
-//   const client = new MongoClient(URI);
-//   const formData = req.body.formData;
-//   try {
-//     await client.connect();
-//     const database = client.db("app-data");
-//     const users = database.collection("users");
-//     const query = { user_id: formData.user_id };
-//     const updateDocument = {
-//       $set: {
-//         name: formData.name,
-//         age: formData.age,
-//         gender: formData.gender,
-//         url: formData.url,
-//         about: formData.about,
-//         matches: formData.matches,
-//       },
-//     };
-//     const insertedUser = await users.updateOne(query, updateDocument);
-//     res.send(insertedUser);
-//   } finally {
-//     await client.close();
-//   }
-// });
-// app.get("/matchedusers", async (req, res) => {
-//   const client = new MongoClient(URI);
-//   const userIds = JSON.parse(req.query.userIds);
-//   try {
-//     await client.connect();
-//     const database = client.db("app-data");
-//     const users = database.collection("users");
-//     const pipeline = [
-//       {
-//         $match: {
-//           user_id: {
-//             $in: userIds,
-//           },
-//         },
-//       },
-//     ];
-//     const foundUsers = await users.aggregate(pipeline).toArray();
-//     res.json(foundUsers);
-//   } finally {
-//     await client.close();
-//   }
-// });
+const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.body;
+    // console.log(req.body);
+    try {
+        const query = { _id: user._id };
+        const updateDocument = {
+            $set: {
+                ownerName: user.ownerName,
+                ownerAge: user.ownerAge,
+                gender: user.gender,
+                avatar: user.avatar,
+                dogName: user.dogName,
+                about: user.about,
+                matches: user.matches,
+            },
+        };
+        const insertedUser = yield users_1.User.findOneAndUpdate(query, updateDocument);
+        console.log(insertedUser);
+        res.status(200).send(insertedUser);
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+        console.log(error);
+    }
+});
+exports.updateUser = updateUser;
+const getMatchedUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userIds = req.query.userIds;
+        if (typeof userIds === "string") {
+            const parsedUserIds = JSON.parse(userIds);
+            const pipeline = [
+                {
+                    $match: {
+                        user_id: {
+                            $in: parsedUserIds,
+                        },
+                    },
+                },
+            ];
+            const foundUsers = yield users_1.User.aggregate(pipeline);
+            res.status(200).json(foundUsers);
+        }
+        else {
+            throw new Error("userIds must be a string.");
+        }
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+        console.log(error);
+    }
+});
+exports.getMatchedUsers = getMatchedUsers;
