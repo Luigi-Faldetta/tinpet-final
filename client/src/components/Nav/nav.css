@@ -1,0 +1,22 @@
+nav .logo-container {
+  width: 2rem;
+  margin: 1rem;
+}
+
+nav .logo-container .logo {
+  width: 100%;
+}
+
+nav .btn-nav {
+  color: #025464;
+  background-color: white;
+  font-size: 1rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 1rem;
+  border: 1px solid #025464;
+  margin: 1rem;
+}
+nav .btn-nav:disabled {
+  background-color: rgb(207, 207, 207);
+  color: #025464;
+}

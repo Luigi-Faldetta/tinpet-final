@@ -1,0 +1,13 @@
+.img-container {
+  height: 50px;
+  width: 50px;
+  border-radius: 100rem;
+  overflow: hidden;
+  margin: 10px;
+}
+
+.chat-display {
+  padding: 1.3rem;
+  height: 60vh;
+  overflow-y: auto;
+}
