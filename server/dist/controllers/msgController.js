@@ -25,7 +25,6 @@ const getMsg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             ],
         };
         const foundMessages = yield msg_1.MessagesTin.find(query);
-        console.log(foundMessages, "here");
         res.status(201).json({ message: "ok", data: foundMessages });
     }
     catch (error) {

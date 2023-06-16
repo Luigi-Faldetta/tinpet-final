@@ -20,18 +20,8 @@ interface UserInterface {
 }
 
 export const postUser = async (req: Request, res: Response) => {
-  const {
-    email,
-    password,
-    ownerName,
-    dogName,
-    ownerAge,
-    dogAge,
-    gender,
-    avatar,
-    matches,
-    about,
-  } = req.body;
+  const { email, password } = req.body;
+  // console.log(req.body);
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -47,14 +37,6 @@ export const postUser = async (req: Request, res: Response) => {
     const data = {
       email: sanitizedEmail,
       password: hashedPassword,
-      ownerName: ownerName,
-      dogName: dogName,
-      ownerAge: ownerAge,
-      dogAge: dogAge,
-      gender: gender,
-      avatar: avatar,
-      matches: matches,
-      about: about,
     };
 
     const newUser = await User.create(data);
