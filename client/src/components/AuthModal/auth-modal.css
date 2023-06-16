@@ -1,0 +1,54 @@
+/* Auth Modal */
+.auth-modal {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 30rem;
+  height: 600px;
+  background-color: #fbffdc;
+  border-radius: 10px;
+  border: solid 1px #025464;
+  padding: 40px;
+}
+.auth-modal h2 {
+  margin-bottom: 2rem;
+}
+
+.auth-modal .close-icon {
+  float: right;
+  color: red;
+}
+
+.auth-modal form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.auth-modal input[type="password"],
+.auth-modal input[type="email"] {
+  padding: 0.5rem;
+  margin: 0.5rem;
+  font: 1rem;
+}
+
+.photo-container {
+  width: 30vw;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin: 10px;
+}
+
+.photo-container img {
+  width: 100%;
+}
+
+.btn-secondary:hover {
+  color: black;
+  border: solid 2px black;
+  cursor: pointer;
+  background-color: gainsboro;
+}

@@ -1,18 +1,20 @@
-/* eslint-disable no-unused-vars */
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import Onboarding from "./pages/Onboarding";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-//This is a test comment!!
-//This is my second test comment!!
-//This is my third test comment!!
+import Home from "./pages/Home/Home";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Onboarding from "./pages/Onboarding/Onboarding";
 
-const App = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+interface CookiesType {
+  AuthToken?: string;
+}
 
-  const authToken = cookies.AuthToken;
+const App: React.FC = () => {
+  const [cookies] = useCookies<string>(["user"]);
+
+  const authToken: string | undefined = cookies.AuthToken;
+  console.log(authToken);
 
   return (
     <>

@@ -1,0 +1,28 @@
+.matches-display {
+  padding: 20px;
+  height: 60vh;
+  overflow-y: auto;
+}
+
+.match-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 0.5rem;
+  padding: 1rem;
+  background-color: rgba(208, 245, 190, 0.3);
+  border-radius: 1rem;
+}
+
+.img-container {
+  height: 50px;
+  width: 50px;
+  border-radius: 100rem;
+  overflow: hidden;
+  margin: 10px;
+}
+
+.img-container img {
+  width: 100%;
+}
