@@ -33,12 +33,31 @@ const getMsg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getMsg = getMsg;
+//this getMsg function works with my get request using params in my MessageService
+// export const getMsg = async (req: Request, res: Response) => {
+//   try {
+//     const { userId, correspondingUserId } = req.query;
+//     const query = {
+//       $or: [
+//         { fromUser: userId, toUser: correspondingUserId },
+//         { fromUser: correspondingUserId, toUser: userId },
+//       ],
+//     };
+//     const foundMessages = await MessagesTin.find(query);
+//     res.status(201).json({ message: "ok", data: foundMessages });
+//   } catch (error: any) {
+//     res.status(500).send(error.message);
+//     console.log(error);
+//   }
+// };
 // // Add a Message to our Database
 const postMsg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const message = req.body;
         const insertedMessage = yield msg_1.MessagesTin.create(message);
-        res.status(201).json({ message: "ok", data: insertedMessage });
+        console.log("All good!");
+        return res.status(201).json({ message: "ok", data: insertedMessage });
+        // return insertedMessage;
     }
     catch (error) {
         console.log("Post message failed with: ", error.message);
