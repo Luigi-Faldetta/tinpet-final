@@ -3,6 +3,7 @@ import ChatInput from "../ChatInput/ChatInput";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "./chat-display.css";
+import MessageService from "../../MessageService";
 
 interface User {
   _id: string;
@@ -18,24 +19,26 @@ interface Message {
 }
 
 interface ChatDisplayProps {
-  user: User | null;
-  clickedUser: User | null;
+  user: User;
+  clickedUser: User;
 }
 
 const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
   const userId = user?._id;
   const clickedUserId = clickedUser?._id;
-  const [usersMessages, setUsersMessages] = useState<Message[] | null>(null);
-  const [clickedUsersMessages, setClickedUsersMessages] = useState<
-    Message[] | null
-  >(null);
+  const [usersMessages, setUsersMessages] = useState<Message[]>([]);
+  const [clickedUsersMessages, setClickedUsersMessages] = useState<Message[]>(
+    []
+  );
 
   const getUsersMessages = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/messages", {
-        params: { userId: userId, correspondingUserId: clickedUserId },
-      });
+      const response = await MessageService.getMsg(userId, clickedUserId);
       setUsersMessages(response.data);
+      console.log(usersMessages);
+      // const response = await axios.get("http://localhost:3000/messages", {
+      //   params: { userId: userId, correspondingUserId: clickedUserId },
+      // });
     } catch (error) {
       console.log(error);
     }
@@ -43,10 +46,13 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
 
   const getClickedUsersMessages = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/messages", {
-        params: { userId: clickedUserId, correspondingUserId: userId },
-      });
+      const response = await MessageService.getMsg(clickedUserId, userId);
       setClickedUsersMessages(response.data);
+      console.log(clickedUsersMessages);
+      // const response = await axios.get("http://localhost:3000/messages", {
+      //   params: { userId: clickedUserId, correspondingUserId: userId },
+      // });
+      // setClickedUsersMessages(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -96,6 +102,8 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
         clickedUser={clickedUser}
         getUserMessages={getUsersMessages}
         getClickedUsersMessages={getClickedUsersMessages}
+        setUsersMessages={setUsersMessages}
+        setClickedUSerMessages={setClickedUsersMessages}
       />
     </>
   );
