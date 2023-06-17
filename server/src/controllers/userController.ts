@@ -8,15 +8,15 @@ interface UserInterface {
   _id?: ObjectId;
   email?: string;
   password?: string;
-  ownerName: string;
-  dogName: string;
-  ownerAge: number;
-  dogAge: number;
-  gender: string;
-  avatar: string;
-  about: string;
+  ownerName?: string;
+  dogName?: string;
+  ownerAge?: number;
+  dogAge?: number;
+  gender?: string;
+  avatar?: string;
+  about?: string;
   //
-  matches: any[];
+  matches?: any[];
 }
 
 export const postUser = async (req: Request, res: Response) => {
