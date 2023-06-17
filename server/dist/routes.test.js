@@ -16,16 +16,14 @@ const supertest_1 = __importDefault(require("supertest"));
 const app_1 = __importDefault(require("./app"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const users_1 = require("./model/users");
+const msg_1 = require("./model/msg");
 const databaseTest = "Newtest";
 const mongoURI = `mongodb://localhost:27017/${databaseTest}`;
 describe("Users tests", () => {
-    let connection;
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            connection = mongoose_1.default.connection;
-            if (connection.readyState === 0) {
-                yield mongoose_1.default.connect(mongoURI);
-            }
+            yield mongoose_1.default.connection.close();
+            yield mongoose_1.default.connect(mongoURI);
         }
         catch (error) {
             console.log(error, "before Error");
@@ -33,6 +31,7 @@ describe("Users tests", () => {
     }));
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield users_1.User.deleteMany();
+        yield mongoose_1.default.connection.close();
     }));
     it("should create a new user", () => __awaiter(void 0, void 0, void 0, function* () {
         const data = { email: "test@test.com", password: "password123" };
@@ -86,65 +85,125 @@ describe("Users tests", () => {
             matches: [],
         };
         const response = yield (0, supertest_1.default)(app_1.default).put("/updateUser").send(updatedData);
-        // console.log(updatedData);
         expect(response.status).toBe(200);
         expect(response.body).toEqual(updatedData);
     }));
-    // it("should get a user by userId", async () => {
-    //   const user = await User.create({
-    //     email: "test@test.com",
-    //     password: "password123",
-    //   });
-    //   console.log(user);
-    //   const response = await request(app).get(`/user/${user._id}`);
-    //   expect(response.status).toBe(200);
-    //   expect(response.body).toEqual({
-    //     _id: user._id,
-    //     ownerName: null,
-    //     dogName: null,
-    //     dogAge: null,
-    //     ownerAge: null,
-    //     gender: null,
-    //     avatar: null,
-    //     matches: null,
-    //     about: null,
-    //   });
-    // });
-    // it("should update a user's match", async () => {
-    //   const user1 = await User.create({
-    //     email: "user1@test.com",
-    //     password: "password123",
-    //   });
-    //   const user2 = await User.create({
-    //     email: "user2@test.com",
-    //     password: "password123",
-    //   });
-    //   const response = await request(app)
-    //     .post("/update-match")
-    //     .send({ userId: user1._id, matchedUserId: user2._id });
-    //   expect(response.status).toBe(200);
-    //   expect(response.body).toBeDefined();
-    // });
-    // it("should get all users", async () => {
-    //   await User.create({ email: "user1@test.com", password: "password123" });
-    //   await User.create({ email: "user2@test.com", password: "password123" });
-    //   const response = await request(app).get("/users");
-    //   expect(response.status).toBe(200);
-    //   expect(response.body.length).toBe(2);
-    // });
-    // it("should get matched users by userIds", async () => {
-    //   const user1 = await User.create({
-    //     email: "user1@test.com",
-    //     password: "password123",
-    //   });
-    //   const user2 = await User.create({
-    //     email: "user2@test.com",
-    //     password: "password123",
-    //   });
-    //   const response = await request(app).get(
-    //     `/matched-users?userIds=["${user1._id}","${user2._id}"]`
-    //   );
-    //   expect(response.status).toBe(200);
-    //   expect(response.body.length).toBe(2);
-    // });
+    it("should get a user by userId", () => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield users_1.User.create({
+            email: "test@test.com",
+            password: "password123",
+        });
+        const response = yield (0, supertest_1.default)(app_1.default).get(`/user/${user._id}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({
+            _id: user._id.toString(),
+            ownerName: null,
+            dogName: null,
+            dogAge: null,
+            ownerAge: null,
+            gender: null,
+            avatar: null,
+            about: null,
+            matches: [],
+        });
+    }));
+    it("should update a user's match", () => __awaiter(void 0, void 0, void 0, function* () {
+        const user1 = yield users_1.User.create({
+            email: "user1@test.com",
+            password: "password123",
+        });
+        const user2 = yield users_1.User.create({
+            email: "user2@test.com",
+            password: "password123",
+        });
+        user1.matches.push(user2._id);
+        yield user1.save();
+        const response = yield (0, supertest_1.default)(app_1.default)
+            .put("/addmatch")
+            .send({ userId: user1._id, matchedUserId: user2._id });
+        expect(response.status).toBe(200);
+        expect(response.body).toBeDefined();
+        const updatedUser1 = yield users_1.User.findById(user1._id);
+        expect(updatedUser1 === null || updatedUser1 === void 0 ? void 0 : updatedUser1.matches).toContainEqual(user2._id);
+    }));
+    it("should return matched users", () => __awaiter(void 0, void 0, void 0, function* () {
+        const user1 = yield users_1.User.create({
+            email: "user1@test.com",
+            password: "password123",
+        });
+        const user2 = yield users_1.User.create({
+            email: "user2@test.com",
+            password: "password123",
+        });
+        user1.matches.push(user2._id);
+        yield user1.save();
+        const response = yield (0, supertest_1.default)(app_1.default)
+            .get("/matchedusers")
+            .query({ userIds: JSON.stringify([user1._id.toString()]) });
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(1);
+        expect(response.body[0]._id).toBe(user1._id.toString());
+    }));
+});
+describe("Messages test", () => {
+    let user1;
+    let user2;
+    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            yield mongoose_1.default.connection.close();
+            yield mongoose_1.default.connect(mongoURI);
+            user1 = yield users_1.User.create({
+                email: "user1@test.com",
+                password: "password123",
+            });
+            user2 = yield users_1.User.create({
+                email: "user2@test.com",
+                password: "password123",
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }));
+    afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield users_1.User.deleteMany();
+        yield msg_1.MessagesTin.deleteMany();
+        yield mongoose_1.default.connection.close();
+    }));
+    it("should add a new message", () => __awaiter(void 0, void 0, void 0, function* () {
+        const newMessage = {
+            fromUser: user1._id,
+            toUser: user2._id,
+            message: "New message",
+        };
+        const response = yield (0, supertest_1.default)(app_1.default).post("/message").send(newMessage);
+        expect(response.status).toBe(201);
+        console.log(response.body.data);
+        expect(response.body.data.message).toBe(newMessage.message);
+        const insertedMessage = yield msg_1.MessagesTin.findOne(newMessage);
+        expect(insertedMessage).toBeDefined();
+    }));
+    it("should get messages between two users", () => __awaiter(void 0, void 0, void 0, function* () {
+        yield msg_1.MessagesTin.create({
+            fromUser: user1._id,
+            toUser: user2._id,
+            message: "Hello User2",
+        });
+        yield msg_1.MessagesTin.create({
+            fromUser: user2._id,
+            toUser: user1._id,
+            message: "Hi User1",
+        });
+        const response = yield (0, supertest_1.default)(app_1.default).get("/messages").send({
+            fromUser: user1._id,
+            toUser: user2._id,
+        });
+        console.log(response.body.data);
+        expect(response.status).toBe(201);
+        expect(response.body.data.length).toBeGreaterThan(0);
+        expect(response.body).toEqual({
+            message: "ok",
+            data: response.body.data,
+        });
+    }));
 });

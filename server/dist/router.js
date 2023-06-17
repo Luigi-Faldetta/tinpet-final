@@ -15,7 +15,7 @@ exports.router.put("/addmatch", userController_1.updateMatch);
 exports.router.put("/updateUser", userController_1.updateUser);
 exports.router.get("/users", userController_1.getAllUsers);
 exports.router.get("/matchedusers", userController_1.getMatchedUsers);
-exports.router.get("/matchedusers", userController_1.getMatchedUsers);
+// router.get("/matchedusers", getMatchedUsers);
 exports.router.get("/messages", msgController_1.getMsg);
 exports.router.post("/message", msgController_1.postMsg);
 exports.default = exports.router;

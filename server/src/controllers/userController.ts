@@ -117,9 +117,9 @@ export const updateMatch = async (req: Request, res: Response) => {
   const { userId, matchedUserId } = req.body;
 
   try {
-    const query = { user_id: userId };
+    const query = { _id: userId };
     const updateDocument = {
-      $push: { matches: { user_id: matchedUserId } },
+      $push: { matches: { _id: matchedUserId } },
     };
 
     const user = await User.updateOne(query, updateDocument);
@@ -179,29 +179,18 @@ export const updateUser = async (req: Request, res: Response) => {
 };
 
 export const getMatchedUsers = async (req: Request, res: Response) => {
-  try {
-    const userIds = req.query.userIds;
+  const userIds = req.query.userIds;
 
-    if (typeof userIds === "string") {
+  if (typeof userIds === "string") {
+    try {
       const parsedUserIds = JSON.parse(userIds);
-
-      const pipeline = [
-        {
-          $match: {
-            user_id: {
-              $in: parsedUserIds,
-            },
-          },
-        },
-      ];
-
-      const foundUsers = await User.aggregate(pipeline);
-      res.status(200).json(foundUsers);
-    } else {
-      throw new Error("userIds must be a string.");
+      const foundUsers = await User.find({ _id: { $in: parsedUserIds } });
+      res.json(foundUsers);
+    } catch (error: any) {
+      res.status(500).send(error.message);
+      console.log(error);
     }
-  } catch (error: any) {
-    res.status(500).send(error.message);
-    console.log(error);
+  } else {
+    res.status(400).send("Invalid userIds");
   }
 };
