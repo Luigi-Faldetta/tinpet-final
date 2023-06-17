@@ -14,7 +14,7 @@ const App: React.FC = () => {
   const [cookies] = useCookies<string>(["user"]);
 
   const authToken: string | undefined = cookies.AuthToken;
-  console.log(authToken);
+  // console.log(authToken);
 
   return (
     <>

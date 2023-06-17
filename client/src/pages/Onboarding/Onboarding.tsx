@@ -1,9 +1,12 @@
+//@ts-nocheck
 import Nav from "../../components/Nav/Nav";
-import React, { useState, FormEvent, ChangeEvent } from "react";
+import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./onboarding.css";
+
+import { Cloudinary } from "@cloudinary/base";
 
 interface FormData {
   user_id?: string;
@@ -19,10 +22,14 @@ interface FormData {
 
 const Onboarding: React.FC = () => {
   const navigate = useNavigate();
-
-  const [cookies] = useCookies(["user"]);
+  const [cloudinaryScriptLoaded, setCloudinaryScriptLoaded] = useState(false);
+  const [cloudinary, setCloudinary] = useState<Cloudinary | null>(null);
+  // const [cookies, setCookie] = useCookies(["user"]);
+  const [cookies, setCookie] = useCookies();
+  // console.log(cookies);
   const [formData, setFormData] = useState<FormData>({
-    user_id: cookies.user?.UserId,
+    // user_id: cookies.user?.UserId,
+    user_id: cookies.UserId,
     ownerName: "",
     dogName: "",
     ownerAge: 0,
@@ -33,28 +40,97 @@ const Onboarding: React.FC = () => {
     avatar: "",
   });
 
+  const openCloudinaryWidget = () => {
+    if (!cloudinary || !cloudinary.createUploadWidget) {
+      console.error("Cloudinary is not available");
+      return;
+    }
+
+    const widget = cloudinary.createUploadWidget(
+      {
+        cloudName: "doqmqgbym",
+        uploadPreset: "mfrvfjgq",
+        // folder: "home/avatars",
+      },
+      (error: string, result: any) => {
+        if (!error && result && result.event === "success") {
+          setFormData((prevState) => ({
+            ...prevState,
+            avatar: result.info.secure_url,
+          }));
+        }
+      }
+    );
+
+    widget.open();
+  };
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://widget.cloudinary.com/v2.0/global/all.js";
+    script.type = "text/javascript";
+    script.onload = () => {
+      setCloudinaryScriptLoaded(true);
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (cloudinaryScriptLoaded) {
+      setCloudinary(window.cloudinary);
+    }
+  }, [cloudinaryScriptLoaded]);
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Submitted");
+
     try {
-      const response = await axios.put("http://localhost:3000/user", {
-        formData,
-      });
-      const success = response.status === 200;
-      if (success) navigate("/dashboard");
+      const { avatar, ...restData } = formData;
+
+      console.log(avatar);
+      console.log(formData);
+      const response = await axios
+        .put("http://localhost:3000/updateUser", {
+          formData: { ...restData, avatar },
+        })
+        .then((response) => {
+          console.log(formData);
+          setCookie("user_id", cookies.UserId);
+          setCookie("ownerName", formData.ownerName);
+          setCookie("dogName", formData.dogName);
+          setCookie("ownerAge", formData.ownerAge);
+          setCookie("dogAge", formData.dogAge);
+          setCookie("gender", formData.gender);
+          setCookie("about", formData.about);
+          setCookie("matches", formData.matches);
+          setCookie("avatar", formData.avatar);
+          const success = response.status === 200;
+          if (success) {
+            navigate("/dashboard");
+            console.log("Submitted!!");
+          }
+        });
     } catch (err) {
       console.log(err);
     }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const name = e.target.name;
+    const { name, value } = e.target;
 
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    if (name === "avatar") {
+      e.preventDefault();
+      openCloudinaryWidget();
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   return (
@@ -68,12 +144,12 @@ const Onboarding: React.FC = () => {
       <div className="onboarding">
         <h2>CREATE ACCOUNT</h2>
 
-        <form onSubmit={handleSubmit}>
+        <form encType="multipart/form-data" onSubmit={handleSubmit}>
           <section>
             <label htmlFor="first_name">Your name</label>
             <input
               type="text"
-              name="yourname"
+              name="ownerName"
               id="yourname"
               placeholder="Your name"
               required={true}
@@ -83,17 +159,17 @@ const Onboarding: React.FC = () => {
             <label>your age</label>
             <input
               type="number"
-              name="yourage"
+              name="ownerAge"
               id="yourage"
               placeholder="Your age"
               required={true}
               value={formData.ownerAge}
               onChange={handleChange}
             />
-            <label htmlFor="first_name">Your name</label>
+            <label htmlFor="first_name">Your dog's name</label>
             <input
               type="text"
-              name="dogname"
+              name="dogName"
               id="dogname"
               placeholder="Your dog's name"
               required={true}
@@ -103,7 +179,7 @@ const Onboarding: React.FC = () => {
             <label>Your dog's age</label>
             <input
               type="number"
-              name="dogage"
+              name="dogAge"
               id="dogage"
               placeholder="Your dog's age"
               required={true}
@@ -153,9 +229,12 @@ const Onboarding: React.FC = () => {
               id="avatar"
               type="url"
               name="avatar"
-              required={true}
+              // required={true}
               onChange={handleChange}
             />
+            <button type="button" onClick={handleChange} name="avatar">
+              Select Profile Picture
+            </button>
             <div className="photo-container">
               {formData.avatar && (
                 <img src={formData.avatar} alt="profile picture" />

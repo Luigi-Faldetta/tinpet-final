@@ -2,7 +2,7 @@ import React from "react";
 import "./chat.css";
 
 interface Message {
-  name: string;
+  ownerName: string;
   img: string;
   message: string;
 }
@@ -19,9 +19,9 @@ const Chat: React.FC<ChatProps> = ({ descendingOrderMessages }) => {
           <div key={index}>
             <div>
               <div className="img-container">
-                <img src={message.img} alt={`${message.name} profile`} />
+                <img src={message.img} alt={`${message.ownerName} profile`} />
               </div>
-              <p>{message.name}</p>
+              <p>{message.ownerName}</p>
             </div>
             <p>{message.message}</p>
           </div>
