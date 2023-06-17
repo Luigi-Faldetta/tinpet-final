@@ -5,12 +5,11 @@ import ChatHeader from "../ChatHeader/ChatHeader";
 import "./chat-container.css";
 
 interface User {
-  user_id: string;
+  _id: string;
   ownerName: string;
   dogName: string;
-  avatar: string;
   matches: User[];
-  url: string;
+  avatar: string;
 }
 
 interface ChatContainerProps {

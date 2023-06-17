@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./matches-display.css";
 
 interface User {
-  user_id: string;
+  _id: string;
   ownerName: string;
   avatar: string;
 }
@@ -20,7 +20,7 @@ const MatchesDisplay: React.FC<MatchesDisplayProps> = ({
   const [matchedProfiles, setMatchedProfiles] = useState<User[] | null>(null);
 
   const getMatches = async () => {
-    const matchedUserIds = matches.map(({ user_id }) => user_id);
+    const matchedUserIds = matches.map(({ _id }) => _id);
 
     try {
       const response = await axios.get("http://localhost:3000/matchedusers", {
@@ -39,7 +39,7 @@ const MatchesDisplay: React.FC<MatchesDisplayProps> = ({
     <div className="matches-display">
       {matchedProfiles?.map((match) => (
         <div
-          key={match.user_id}
+          key={match._id}
           className="match-card"
           onClick={() => setClickedUser(match)}
         >
