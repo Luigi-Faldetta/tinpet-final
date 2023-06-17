@@ -14,7 +14,7 @@ const userMsg = new _1.default.Schema({
     },
     fromUser: {
         type: mongodb_1.ObjectId,
-        required: true,
+        required: false,
     },
     toUser: {
         type: mongodb_1.ObjectId,
@@ -22,7 +22,7 @@ const userMsg = new _1.default.Schema({
     },
     message: {
         type: String,
-        required: true,
+        required: false,
     },
 });
 exports.MessagesTin = _1.default.model("MessagesTin", userMsg);

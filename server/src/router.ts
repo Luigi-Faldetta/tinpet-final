@@ -18,7 +18,7 @@ router.put("/addmatch", updateMatch);
 router.put("/updateUser", updateUser);
 router.get("/users", getAllUsers);
 router.get("/matchedusers", getMatchedUsers);
-router.get("/matchedusers", getMatchedUsers);
+// router.get("/matchedusers", getMatchedUsers);
 router.get("/messages", getMsg);
 router.post("/message", postMsg);
 

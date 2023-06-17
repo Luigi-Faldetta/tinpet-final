@@ -8,7 +8,7 @@ const userMsg = new mongoose.Schema({
   },
   fromUser: {
     type: ObjectId,
-    required: true,
+    required: false,
   },
   toUser: {
     type: ObjectId,
@@ -16,7 +16,7 @@ const userMsg = new mongoose.Schema({
   },
   message: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 export const MessagesTin = mongoose.model("MessagesTin", userMsg);

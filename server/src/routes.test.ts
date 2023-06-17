@@ -2,18 +2,15 @@ import request from "supertest";
 import app from "./app";
 import mongoose from "mongoose";
 import { User } from "./model/users";
+import { MessagesTin } from "./model/msg";
 const databaseTest = "Newtest";
 const mongoURI = `mongodb://localhost:27017/${databaseTest}`;
 
 describe("Users tests", () => {
-  let connection: mongoose.Connection;
-
   beforeAll(async () => {
     try {
-      connection = mongoose.connection;
-      if (connection.readyState === 0) {
-        await mongoose.connect(mongoURI);
-      }
+      await mongoose.connection.close();
+      await mongoose.connect(mongoURI);
     } catch (error) {
       console.log(error, "before Error");
     }
@@ -21,6 +18,7 @@ describe("Users tests", () => {
 
   afterAll(async () => {
     await User.deleteMany();
+    await mongoose.connection.close();
   });
 
   it("should create a new user", async () => {
@@ -83,78 +81,142 @@ describe("Users tests", () => {
     };
 
     const response = await request(app).put("/updateUser").send(updatedData);
-    // console.log(updatedData);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(updatedData);
   });
 
-  // it("should get a user by userId", async () => {
-  //   const user = await User.create({
-  //     email: "test@test.com",
-  //     password: "password123",
-  //   });
-  //   console.log(user);
-  //   const response = await request(app).get(`/user/${user._id}`);
-  //   expect(response.status).toBe(200);
-  //   expect(response.body).toEqual({
-  //     _id: user._id,
-  //     ownerName: null,
-  //     dogName: null,
-  //     dogAge: null,
-  //     ownerAge: null,
-  //     gender: null,
-  //     avatar: null,
-  //     matches: null,
-  //     about: null,
-  //   });
-  // });
+  it("should get a user by userId", async () => {
+    const user = await User.create({
+      email: "test@test.com",
+      password: "password123",
+    });
+    const response = await request(app).get(`/user/${user._id}`);
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      _id: user._id.toString(),
+      ownerName: null,
+      dogName: null,
+      dogAge: null,
+      ownerAge: null,
+      gender: null,
+      avatar: null,
+      about: null,
+      matches: [],
+    });
+  });
 
-  // it("should update a user's match", async () => {
-  //   const user1 = await User.create({
-  //     email: "user1@test.com",
-  //     password: "password123",
-  //   });
+  it("should update a user's match", async () => {
+    const user1 = await User.create({
+      email: "user1@test.com",
+      password: "password123",
+    });
 
-  //   const user2 = await User.create({
-  //     email: "user2@test.com",
-  //     password: "password123",
-  //   });
+    const user2 = await User.create({
+      email: "user2@test.com",
+      password: "password123",
+    });
 
-  //   const response = await request(app)
-  //     .post("/update-match")
-  //     .send({ userId: user1._id, matchedUserId: user2._id });
+    user1.matches.push(user2._id);
+    await user1.save();
 
-  //   expect(response.status).toBe(200);
-  //   expect(response.body).toBeDefined();
-  // });
+    const response = await request(app)
+      .put("/addmatch")
+      .send({ userId: user1._id, matchedUserId: user2._id });
 
-  // it("should get all users", async () => {
-  //   await User.create({ email: "user1@test.com", password: "password123" });
-  //   await User.create({ email: "user2@test.com", password: "password123" });
+    expect(response.status).toBe(200);
+    expect(response.body).toBeDefined();
 
-  //   const response = await request(app).get("/users");
+    const updatedUser1 = await User.findById(user1._id);
+    expect(updatedUser1?.matches).toContainEqual(user2._id);
+  });
 
-  //   expect(response.status).toBe(200);
-  //   expect(response.body.length).toBe(2);
-  // });
+  it("should return matched users", async () => {
+    const user1 = await User.create({
+      email: "user1@test.com",
+      password: "password123",
+    });
 
-  // it("should get matched users by userIds", async () => {
-  //   const user1 = await User.create({
-  //     email: "user1@test.com",
-  //     password: "password123",
-  //   });
+    const user2 = await User.create({
+      email: "user2@test.com",
+      password: "password123",
+    });
 
-  //   const user2 = await User.create({
-  //     email: "user2@test.com",
-  //     password: "password123",
-  //   });
+    user1.matches.push(user2._id);
+    await user1.save();
 
-  //   const response = await request(app).get(
-  //     `/matched-users?userIds=["${user1._id}","${user2._id}"]`
-  //   );
+    const response = await request(app)
+      .get("/matchedusers")
+      .query({ userIds: JSON.stringify([user1._id.toString()]) });
 
-  //   expect(response.status).toBe(200);
-  //   expect(response.body.length).toBe(2);
-  // });
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(1);
+    expect(response.body[0]._id).toBe(user1._id.toString());
+  });
+});
+describe("Messages test", () => {
+  let user1: any;
+  let user2: any;
+  beforeAll(async () => {
+    try {
+      await mongoose.connection.close();
+      await mongoose.connect(mongoURI);
+      user1 = await User.create({
+        email: "user1@test.com",
+        password: "password123",
+      });
+
+      user2 = await User.create({
+        email: "user2@test.com",
+        password: "password123",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  afterAll(async () => {
+    await User.deleteMany();
+    await MessagesTin.deleteMany();
+    await mongoose.connection.close();
+  });
+  it("should add a new message", async () => {
+    const newMessage = {
+      fromUser: user1._id,
+      toUser: user2._id,
+      message: "New message",
+    };
+
+    const response = await request(app).post("/message").send(newMessage);
+
+    expect(response.status).toBe(201);
+    console.log(response.body.data);
+    expect(response.body.data.message).toBe(newMessage.message);
+
+    const insertedMessage = await MessagesTin.findOne(newMessage);
+    expect(insertedMessage).toBeDefined();
+  });
+  it("should get messages between two users", async () => {
+    await MessagesTin.create({
+      fromUser: user1._id,
+      toUser: user2._id,
+      message: "Hello User2",
+    });
+
+    await MessagesTin.create({
+      fromUser: user2._id,
+      toUser: user1._id,
+      message: "Hi User1",
+    });
+    const response = await request(app).get("/messages").send({
+      fromUser: user1._id,
+      toUser: user2._id,
+    });
+    console.log(response.body.data);
+    expect(response.status).toBe(201);
+    expect(response.body.data.length).toBeGreaterThan(0);
+    expect(response.body).toEqual({
+      message: "ok",
+      data: response.body.data,
+    });
+  });
 });
