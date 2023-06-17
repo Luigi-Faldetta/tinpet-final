@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import CloseIcon from "@mui/icons-material/Close";
 import React, { useState } from "react";
 import axios from "axios";
@@ -21,10 +23,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
   const [password, setPassword] = useState<string | null>(null);
   const [confirmPassword, setConfirmPassword] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [cookies, setCookies, removeCookies] = useCookies([
-    "AuthToken",
-    "UserId",
-  ]);
+  const [cookies, setCookie, removeCookie] = useCookies(null);
 
   const navigate = useNavigate();
 
@@ -41,23 +40,29 @@ const AuthModal: React.FC<AuthModalProps> = ({
         return;
       }
       console.log(email, password);
-      const response = await axios.post(
-        `http://localhost:3000/${isSignUp ? "signup" : "login"}`,
-        {
+      const response = await axios
+        .post(`http://localhost:3000/${isSignUp ? "signup" : "login"}`, {
           email,
           password,
-        }
-      );
+        })
+        .then((response) => {
+          const token = response.data.token;
+          const userId = response.data.id;
+          setCookie("UserId", userId);
+          setCookie("AuthToken", token);
+          const success = response.status === 201;
 
-      setCookies("AuthToken", response.data.token);
-      setCookies("UserId", response.data.userId);
+          if (success && isSignUp) {
+            console.log(response.data);
+            navigate("/onboarding");
+          }
+          if (success && !isSignUp) {
+            console.log(response.data);
+            navigate("/dashboard");
+          }
 
-      const success = response.status === 201;
-
-      if (success && isSignUp) navigate("/onboarding");
-      if (success && !isSignUp) navigate("/dashboard");
-
-      window.location.reload();
+          window.location.reload();
+        });
     } catch (error) {
       console.log(error);
     }

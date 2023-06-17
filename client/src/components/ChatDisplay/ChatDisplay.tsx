@@ -6,13 +6,15 @@ import "./chat-display.css";
 
 interface User {
   user_id: string;
-  name: string;
-  url: string;
+  ownerName: string;
+  avatar: string;
 }
 
 interface Message {
   message: string;
   timestamp: string;
+  img: string;
+  ownerName: string;
 }
 
 interface ChatDisplayProps {
@@ -56,7 +58,7 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
   }, []);
 
   const messages: {
-    name: string;
+    ownerName: string;
     img: string;
     message: string;
     timestamp: string;
@@ -64,8 +66,8 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
 
   usersMessages?.forEach((message) => {
     const formattedMessage = {
-      name: user?.name || "",
-      img: user?.url || "",
+      ownerName: user?.ownerName || "",
+      img: user?.avatar || "",
       message: message.message,
       timestamp: message.timestamp,
     };
@@ -74,8 +76,8 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
 
   clickedUsersMessages?.forEach((message) => {
     const formattedMessage = {
-      name: clickedUser?.name || "",
-      img: clickedUser?.url || "",
+      ownerName: clickedUser?.ownerName || "",
+      img: clickedUser?.avatar || "",
       message: message.message,
       timestamp: message.timestamp,
     };

@@ -4,8 +4,8 @@ import "./matches-display.css";
 
 interface User {
   user_id: string;
-  name: string;
-  url: string;
+  ownerName: string;
+  avatar: string;
 }
 
 interface MatchesDisplayProps {
@@ -44,9 +44,9 @@ const MatchesDisplay: React.FC<MatchesDisplayProps> = ({
           onClick={() => setClickedUser(match)}
         >
           <div className="img-container">
-            <img src={match?.url} alt="matched photo" />
+            <img src={match?.avatar} alt="matched photo" />
           </div>
-          <h3>{match?.name}</h3>
+          <h3>{match?.ownerName}</h3>
         </div>
       ))}
     </div>

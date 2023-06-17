@@ -21,20 +21,25 @@ interface User {
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [users, setUsers] = useState<User[]>([]);
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "AuthToken",
-    "UserId",
-  ]);
+  // const [cookies, setCookie, removeCookie] = useCookies([
+  //   "AuthToken",
+  //   "UserId",
+  // ]);
+  const [cookies, setCookie, removeCookie] = useCookies();
   const [lastDirection, setLastDirection] = useState<string | null>(null);
 
   const userId: string = cookies.UserId;
 
   const getUser = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/user", {
-        params: { userId },
-      });
-      setUser(response.data);
+      const response = await axios
+        .get("http://localhost:3000/user", {
+          params: { userId },
+        })
+        .then((response) => {
+          setUser(response.data);
+          console.log(setUser);
+        });
     } catch (error) {
       console.log(error);
     }
