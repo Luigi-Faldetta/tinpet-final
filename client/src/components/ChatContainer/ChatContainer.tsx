@@ -8,9 +8,8 @@ interface User {
   user_id: string;
   ownerName: string;
   dogName: string;
-  avatar: string;
   matches: User[];
-  url: string;
+  avatar: string;
 }
 
 interface ChatContainerProps {

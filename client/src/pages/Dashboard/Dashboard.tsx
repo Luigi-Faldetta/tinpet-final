@@ -10,7 +10,6 @@ interface User {
   ownerName: string;
   dogName: string;
   matches: User[];
-  url: string;
   about: string;
   dogAge: number;
   ownerAge: number;
@@ -21,22 +20,22 @@ interface User {
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [users, setUsers] = useState<User[]>([]);
-  // const [cookies, setCookie, removeCookie] = useCookies([
-  //   "AuthToken",
-  //   "UserId",
-  // ]);
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "AuthToken",
+    "UserId",
+  ]);
+
   const [lastDirection, setLastDirection] = useState<string | null>(null);
 
   const userId: string = cookies.UserId;
 
   const getUser = async () => {
     try {
+      console.log(userId);
       const response = await axios
-        .get("http://localhost:3000/user", {
-          params: { userId },
-        })
+        .get(`http://localhost:3000/user/${userId}`)
         .then((response) => {
+          console.log("Yes!");
           setUser(response.data);
           console.log(setUser);
         });
@@ -106,7 +105,7 @@ const Dashboard: React.FC = () => {
                   onCardLeftScreen={() => outOfFrame(user.ownerName)}
                 >
                   <div
-                    style={{ backgroundImage: "url(" + user.url + ")" }}
+                    style={{ backgroundImage: "url(" + user.avatar + ")" }}
                     className="card"
                   >
                     <h3>

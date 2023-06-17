@@ -1,4 +1,3 @@
-//ChatHeader.tsx
 import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useCookies } from "react-cookie";

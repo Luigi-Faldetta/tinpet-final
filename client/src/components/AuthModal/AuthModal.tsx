@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 import CloseIcon from "@mui/icons-material/Close";
 import React, { useState } from "react";
 import axios from "axios";
@@ -23,7 +21,10 @@ const AuthModal: React.FC<AuthModalProps> = ({
   const [password, setPassword] = useState<string | null>(null);
   const [confirmPassword, setConfirmPassword] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [cookies, setCookie, removeCookie] = useCookies(null);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "AuthToken",
+    "UserId",
+  ]);
 
   const navigate = useNavigate();
 
@@ -39,24 +40,29 @@ const AuthModal: React.FC<AuthModalProps> = ({
         setError("Passwords needs to match!");
         return;
       }
-      console.log(email, password);
       const response = await axios
         .post(`http://localhost:3000/${isSignUp ? "signup" : "login"}`, {
           email,
           password,
         })
         .then((response) => {
-          const token = response.data.token;
-          const userId = response.data.id;
-          setCookie("UserId", userId);
-          setCookie("AuthToken", token);
+          console.log(response.data);
+
           const success = response.status === 201;
 
           if (success && isSignUp) {
+            const token = response.data.token;
+            const userId = response.data.data;
+            setCookie("UserId", userId);
+            setCookie("AuthToken", token);
             console.log(response.data);
             navigate("/onboarding");
           }
           if (success && !isSignUp) {
+            const token = response.data.token;
+            const userId = response.data.userId;
+            setCookie("UserId", userId);
+            setCookie("AuthToken", token);
             console.log(response.data);
             navigate("/dashboard");
           }

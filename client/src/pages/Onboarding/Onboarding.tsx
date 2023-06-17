@@ -9,7 +9,7 @@ import "./onboarding.css";
 import { Cloudinary } from "@cloudinary/base";
 
 interface FormData {
-  user_id?: string;
+  _id?: string;
   ownerName: string;
   dogName: string;
   ownerAge: number;
@@ -29,7 +29,7 @@ const Onboarding: React.FC = () => {
   // console.log(cookies);
   const [formData, setFormData] = useState<FormData>({
     // user_id: cookies.user?.UserId,
-    user_id: cookies.UserId,
+    _id: cookies.UserId,
     ownerName: "",
     dogName: "",
     ownerAge: 0,
@@ -91,23 +91,25 @@ const Onboarding: React.FC = () => {
     try {
       const { avatar, ...restData } = formData;
 
-      console.log(avatar);
+      formData.dogAge = Number(formData.dogAge);
+      formData.ownerAge = Number(formData.ownerAge);
       console.log(formData);
+      console.log(typeof formData.dogAge);
+      console.log(typeof formData.ownerAge);
       const response = await axios
-        .put("http://localhost:3000/updateUser", {
-          formData: { ...restData, avatar },
-        })
+        .put("http://localhost:3000/updateUser", { ...restData, avatar })
         .then((response) => {
           console.log(formData);
-          setCookie("user_id", cookies.UserId);
-          setCookie("ownerName", formData.ownerName);
-          setCookie("dogName", formData.dogName);
-          setCookie("ownerAge", formData.ownerAge);
-          setCookie("dogAge", formData.dogAge);
-          setCookie("gender", formData.gender);
-          setCookie("about", formData.about);
-          setCookie("matches", formData.matches);
-          setCookie("avatar", formData.avatar);
+          setCookie("_id", cookies.UserId);
+          // setCookie("ownerName", formData.ownerName);
+          // setCookie("dogName", formData.dogName);
+          // setCookie("ownerAge", formData.ownerAge);
+          // setCookie("dogAge", formData.dogAge);
+          // setCookie("gender", formData.gender);
+          // setCookie("about", formData.about);
+          // setCookie("matches", formData.matches);
+          // setCookie("avatar", formData.avatar);
+          console.log(cookies);
           const success = response.status === 200;
           if (success) {
             navigate("/dashboard");
