@@ -43,6 +43,28 @@ const UserService = {
       throw error;
     }
   },
+  updateMatch: async (userId: string, matchedUserId: string) => {
+    try {
+      console.log(userId);
+      await axios.put("http://localhost:3000/addmatch", {
+        userId,
+        matchedUserId,
+      });
+      axios.get(`http://localhost:3000/user/${userId}`);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  getMatchedUsers: async (matchedUserIds: Array<string>) => {
+    try {
+      const response = await axios.get("http://localhost:3000/matchedusers", {
+        params: { userIds: JSON.stringify(matchedUserIds) },
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export default UserService;

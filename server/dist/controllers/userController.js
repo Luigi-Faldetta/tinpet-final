@@ -169,6 +169,8 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updateUser = updateUser;
 const getMatchedUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userIds = req.query.userIds;
+    console.log(req);
+    console.log(req.query);
     if (typeof userIds === "string") {
         try {
             const parsedUserIds = JSON.parse(userIds);

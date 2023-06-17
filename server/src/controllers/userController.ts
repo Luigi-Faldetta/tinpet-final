@@ -180,7 +180,8 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const getMatchedUsers = async (req: Request, res: Response) => {
   const userIds = req.query.userIds;
-
+  console.log(req);
+  console.log(req.query);
   if (typeof userIds === "string") {
     try {
       const parsedUserIds = JSON.parse(userIds);

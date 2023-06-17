@@ -64,24 +64,14 @@ const Dashboard: React.FC = () => {
     }
   }, [user]);
 
-  const updateMatches = async (matchedUserId: string) => {
-    try {
-      console.log(userId);
-      await axios.put("http://localhost:3000/addmatch", {
-        userId,
-        matchedUserId,
-      });
-      getUser();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const updateMatches = UserService.updateMatch("userId", "matchedUserId");
 
-  const swiped = (direction: string, swipedId: string) => {
-    if (direction === "right") {
-      updateMatches(swipedId);
-    }
+  const swiped = (direction: string, userId: string, swipedId: string) => {
     setLastDirection(direction);
+    if (direction === "right") {
+      // updateMatches(userId, swipedId);
+      UserService.updateMatch(userId, swipedId);
+    }
   };
 
   const outOfFrame = (ownerName: string) => {
@@ -104,7 +94,7 @@ const Dashboard: React.FC = () => {
                 <TinderCard
                   className="swipe"
                   key={user._id}
-                  onSwipe={(dir) => swiped(dir, user._id)}
+                  onSwipe={(dir) => swiped(dir, userId, user._id)}
                   onCardLeftScreen={() => outOfFrame(user.ownerName)}
                 >
                   <div
