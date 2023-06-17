@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from ".";
 import { ObjectId } from "mongodb";
 const userMsg = new mongoose.Schema({
   time: {

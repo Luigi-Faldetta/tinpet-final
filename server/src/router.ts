@@ -13,7 +13,7 @@ import { getMsg, postMsg } from "./controllers/msgController";
 
 router.post("/signup", postUser);
 router.post("/login", loginUser);
-router.get("/user", getUser);
+router.get("/user/:id", getUser);
 router.put("/addmatch", updateMatch);
 router.put("/updateUser", updateUser);
 router.get("/users", getAllUsers);

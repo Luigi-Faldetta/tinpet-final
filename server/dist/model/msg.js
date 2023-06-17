@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MessagesTin = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
+const _1 = __importDefault(require("."));
 const mongodb_1 = require("mongodb");
-const userMsg = new mongoose_1.default.Schema({
+const userMsg = new _1.default.Schema({
     time: {
         type: Date,
         default: Date.now(),
@@ -25,4 +25,4 @@ const userMsg = new mongoose_1.default.Schema({
         required: true,
     },
 });
-exports.MessagesTin = mongoose_1.default.model("MessagesTin", userMsg);
+exports.MessagesTin = _1.default.model("MessagesTin", userMsg);

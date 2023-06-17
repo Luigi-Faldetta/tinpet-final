@@ -10,7 +10,7 @@ const userController_1 = require("./controllers/userController");
 const msgController_1 = require("./controllers/msgController");
 exports.router.post("/signup", userController_1.postUser);
 exports.router.post("/login", userController_1.loginUser);
-exports.router.get("/user", userController_1.getUser);
+exports.router.get("/user/:id", userController_1.getUser);
 exports.router.put("/addmatch", userController_1.updateMatch);
 exports.router.put("/updateUser", userController_1.updateUser);
 exports.router.get("/users", userController_1.getAllUsers);
