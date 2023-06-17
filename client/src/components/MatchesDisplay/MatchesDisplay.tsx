@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./matches-display.css";
+import UserService from "../../UserService";
 
 interface User {
   _id: string;
@@ -22,11 +23,10 @@ const MatchesDisplay: React.FC<MatchesDisplayProps> = ({
   const getMatches = async () => {
     const matchedUserIds = matches.map(({ _id }) => _id);
 
+    console.log(matchedUserIds);
     try {
-      const response = await axios.get("http://localhost:3000/matchedusers", {
-        params: { userIds: JSON.stringify(matchedUserIds) },
-      });
-      setMatchedProfiles(response.data);
+      const response = await UserService.getMatchedUsers(matchedUserIds);
+      setMatchedProfiles(response);
     } catch (error) {
       console.log(error);
     }
