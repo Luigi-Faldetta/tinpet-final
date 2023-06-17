@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 import "./dashboard.css";
 
 interface User {
-  user_id: string;
+  _id: string;
   ownerName: string;
   dogName: string;
   matches: User[];
@@ -67,6 +67,7 @@ const Dashboard: React.FC = () => {
 
   const updateMatches = async (matchedUserId: string) => {
     try {
+      console.log(userId);
       await axios.put("http://localhost:3000/addmatch", {
         userId,
         matchedUserId,
@@ -88,7 +89,10 @@ const Dashboard: React.FC = () => {
     console.log(ownerName + " left the screen!");
   };
 
-  const filteredUsers = users.filter((user) => user.user_id !== userId);
+  const filteredUsers = users.filter((user) => {
+    console.log(user);
+    return user._id !== userId;
+  });
 
   return (
     <>
@@ -100,8 +104,8 @@ const Dashboard: React.FC = () => {
               {filteredUsers.map((user) => (
                 <TinderCard
                   className="swipe"
-                  key={user.user_id}
-                  onSwipe={(dir) => swiped(dir, user.user_id)}
+                  key={user._id}
+                  onSwipe={(dir) => swiped(dir, user._id)}
                   onCardLeftScreen={() => outOfFrame(user.ownerName)}
                 >
                   <div
@@ -111,6 +115,7 @@ const Dashboard: React.FC = () => {
                     <h3>
                       {user.dogName + ", Age: "}
                       {user.dogAge}
+                      {user._id}
                     </h3>
                     <h3>{user.about}</h3>
                   </div>

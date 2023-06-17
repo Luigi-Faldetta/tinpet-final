@@ -3,7 +3,7 @@ import axios from "axios";
 import "./chat-input.css";
 
 interface User {
-  user_id: string;
+  _id: string;
 }
 
 interface ChatInputProps {
@@ -20,8 +20,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
   getClickedUsersMessages,
 }) => {
   const [textArea, setTextArea] = useState("");
-  const userId = user?.user_id;
-  const clickedUserId = clickedUser?.user_id;
+  const userId = user?._id;
+  const clickedUserId = clickedUser?._id;
 
   const addMessage = async () => {
     const message = {

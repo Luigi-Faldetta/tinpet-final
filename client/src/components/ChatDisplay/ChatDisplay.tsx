@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import "./chat-display.css";
 
 interface User {
-  user_id: string;
+  _id: string;
   ownerName: string;
   avatar: string;
 }
@@ -23,8 +23,8 @@ interface ChatDisplayProps {
 }
 
 const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
-  const userId = user?.user_id;
-  const clickedUserId = clickedUser?.user_id;
+  const userId = user?._id;
+  const clickedUserId = clickedUser?._id;
   const [usersMessages, setUsersMessages] = useState<Message[] | null>(null);
   const [clickedUsersMessages, setClickedUsersMessages] = useState<
     Message[] | null
