@@ -21,7 +21,7 @@ const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log(req.body);
     const hashedPassword = yield bcrypt_1.default.hash(password, 10);
     try {
-        const existingUser = yield users_1.User.findOne({ email });
+        const existingUser = yield users_1.User.findOne({ email }).maxTimeMS(15000);
         if (existingUser) {
             return res.status(409).send("User already exists. Please login");
         }
@@ -31,10 +31,11 @@ const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             password: hashedPassword,
         };
         const newUser = yield users_1.User.create(data);
+        // console.log(newUser);
         const token = jsonwebtoken_1.default.sign(data, sanitizedEmail, {
             expiresIn: 60 * 24,
         });
-        res.status(201).json({ message: "ok", data: data.email, token: token });
+        res.status(201).json({ message: "ok", data: newUser._id, token: token });
     }
     catch (err) {
         console.log(err);
@@ -52,13 +53,13 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 const payload = {
                     userId: user._id,
                     email: user.email,
-                    // ownerName: user.ownerName,
-                    // dogName: user.dogName,
-                    // ownerAge: user.ownerAge,
-                    // dogAge: user.dogAge,
-                    // gender: user.gender,
-                    // avatar: user.avatar,
-                    // matches: user.matches,
+                    ownerName: user.ownerName,
+                    dogName: user.dogName,
+                    ownerAge: user.ownerAge,
+                    dogAge: user.dogAge,
+                    gender: user.gender,
+                    avatar: user.avatar,
+                    matches: user.matches,
                 };
                 const token = jsonwebtoken_1.default.sign(payload, email, {
                     expiresIn: 60 * 24,
@@ -77,9 +78,9 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.loginUser = loginUser;
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userId = req.query.userId;
+    const userId = req.params.id;
     try {
-        const query = { user_id: userId };
+        const query = { _id: userId };
         const user = yield users_1.User.findOne(query);
         if (user) {
             const safeUser = {
@@ -134,7 +135,6 @@ exports.getAllUsers = getAllUsers;
 // // Update account /onboarding
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.body;
-    // console.log(req.body);
     try {
         const query = { _id: user._id };
         const updateDocument = {
@@ -144,13 +144,22 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 gender: user.gender,
                 avatar: user.avatar,
                 dogName: user.dogName,
+                dogAge: user.dogAge,
                 about: user.about,
                 matches: user.matches,
             },
         };
-        const insertedUser = yield users_1.User.findOneAndUpdate(query, updateDocument);
-        console.log(insertedUser);
-        res.status(200).send(insertedUser);
+        const updatedUser = yield users_1.User.findOneAndUpdate(query, updateDocument, {
+            new: true,
+        });
+        // console.log("here");
+        // console.log(updatedUser);
+        if (updatedUser) {
+            res.status(200).send(updatedUser);
+        }
+        else {
+            res.status(404).send("User not found");
+        }
     }
     catch (error) {
         res.status(500).send(error.message);

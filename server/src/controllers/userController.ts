@@ -26,7 +26,7 @@ export const postUser = async (req: Request, res: Response) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email }).maxTimeMS(15000);
 
     if (existingUser) {
       return res.status(409).send("User already exists. Please login");
@@ -40,12 +40,13 @@ export const postUser = async (req: Request, res: Response) => {
     };
 
     const newUser = await User.create(data);
+    // console.log(newUser);
 
     const token = jwt.sign(data, sanitizedEmail, {
       expiresIn: 60 * 24,
     });
 
-    res.status(201).json({ message: "ok", data: data.email, token: token });
+    res.status(201).json({ message: "ok", data: newUser._id, token: token });
   } catch (err) {
     console.log(err);
   }
@@ -63,13 +64,13 @@ export const loginUser = async (req: Request, res: Response) => {
         const payload = {
           userId: user._id,
           email: user.email,
-          // ownerName: user.ownerName,
-          // dogName: user.dogName,
-          // ownerAge: user.ownerAge,
-          // dogAge: user.dogAge,
-          // gender: user.gender,
-          // avatar: user.avatar,
-          // matches: user.matches,
+          ownerName: user.ownerName,
+          dogName: user.dogName,
+          ownerAge: user.ownerAge,
+          dogAge: user.dogAge,
+          gender: user.gender,
+          avatar: user.avatar,
+          matches: user.matches,
         };
         const token = jwt.sign(payload, email, {
           expiresIn: 60 * 24,
@@ -86,10 +87,10 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 export const getUser = async (req: Request, res: Response) => {
-  const userId = req.query.userId;
+  const userId = req.params.id;
 
   try {
-    const query = { user_id: userId };
+    const query = { _id: userId };
     const user = await User.findOne(query);
     if (user) {
       const safeUser: UserInterface = {
@@ -144,7 +145,6 @@ export const getAllUsers = async (req: Request, res: Response) => {
 // // Update account /onboarding
 export const updateUser = async (req: Request, res: Response) => {
   const user = req.body;
-  // console.log(req.body);
 
   try {
     const query = { _id: user._id };
@@ -155,13 +155,23 @@ export const updateUser = async (req: Request, res: Response) => {
         gender: user.gender,
         avatar: user.avatar,
         dogName: user.dogName,
+        dogAge: user.dogAge,
         about: user.about,
         matches: user.matches,
       },
     };
-    const insertedUser = await User.findOneAndUpdate(query, updateDocument);
-    console.log(insertedUser);
-    res.status(200).send(insertedUser);
+
+    const updatedUser = await User.findOneAndUpdate(query, updateDocument, {
+      new: true,
+    });
+    // console.log("here");
+    // console.log(updatedUser);
+
+    if (updatedUser) {
+      res.status(200).send(updatedUser);
+    } else {
+      res.status(404).send("User not found");
+    }
   } catch (error: any) {
     res.status(500).send(error.message);
     console.log(error);
