@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import "./auth-modal.css";
+import UserService from "../../UserService";
 
 interface AuthModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,8 +18,8 @@ const AuthModal: React.FC<AuthModalProps> = ({
   setShowModal: (value: boolean) => void;
   isSignUp: boolean;
 }) => {
-  const [email, setEmail] = useState<string | null>(null);
-  const [password, setPassword] = useState<string | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -40,35 +41,35 @@ const AuthModal: React.FC<AuthModalProps> = ({
         setError("Passwords needs to match!");
         return;
       }
-      const response = await axios
-        .post(`http://localhost:3000/${isSignUp ? "signup" : "login"}`, {
-          email,
-          password,
-        })
-        .then((response) => {
+
+      const response = await UserService.postUser(
+        email,
+        password,
+        isSignUp
+      ).then((response) => {
+        console.log(response.data);
+
+        const success = response.status === 201;
+
+        if (success && isSignUp) {
+          const token = response.data.token;
+          const userId = response.data.data;
+          setCookie("UserId", userId);
+          setCookie("AuthToken", token);
           console.log(response.data);
+          navigate("/onboarding");
+        }
+        if (success && !isSignUp) {
+          const token = response.data.token;
+          const userId = response.data.userId;
+          setCookie("UserId", userId);
+          setCookie("AuthToken", token);
+          console.log(response.data);
+          navigate("/dashboard");
+        }
 
-          const success = response.status === 201;
-
-          if (success && isSignUp) {
-            const token = response.data.token;
-            const userId = response.data.data;
-            setCookie("UserId", userId);
-            setCookie("AuthToken", token);
-            console.log(response.data);
-            navigate("/onboarding");
-          }
-          if (success && !isSignUp) {
-            const token = response.data.token;
-            const userId = response.data.userId;
-            setCookie("UserId", userId);
-            setCookie("AuthToken", token);
-            console.log(response.data);
-            navigate("/dashboard");
-          }
-
-          window.location.reload();
-        });
+        window.location.reload();
+      });
     } catch (error) {
       console.log(error);
     }

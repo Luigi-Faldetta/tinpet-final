@@ -5,8 +5,8 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./onboarding.css";
-
 import { Cloudinary } from "@cloudinary/base";
+import UserService from "../../UserService";
 
 interface FormData {
   _id?: string;
@@ -96,26 +96,22 @@ const Onboarding: React.FC = () => {
       console.log(formData);
       console.log(typeof formData.dogAge);
       console.log(typeof formData.ownerAge);
-      const response = await axios
-        .put("http://localhost:3000/updateUser", { ...restData, avatar })
-        .then((response) => {
-          console.log(formData);
-          setCookie("_id", cookies.UserId);
-          // setCookie("ownerName", formData.ownerName);
-          // setCookie("dogName", formData.dogName);
-          // setCookie("ownerAge", formData.ownerAge);
-          // setCookie("dogAge", formData.dogAge);
-          // setCookie("gender", formData.gender);
-          // setCookie("about", formData.about);
-          // setCookie("matches", formData.matches);
-          // setCookie("avatar", formData.avatar);
-          console.log(cookies);
-          const success = response.status === 200;
-          if (success) {
-            navigate("/dashboard");
-            console.log("Submitted!!");
-          }
-        });
+      // const response = await axios
+      //   .put("http://localhost:3000/updateUser", { ...restData, avatar })
+      const response = await UserService.updateUser(
+        restData,
+        avatar,
+        cookies.UserId
+      ).then((response) => {
+        // console.log(formData);
+        setCookie("_id", cookies.UserId);
+        // console.log(cookies);
+        const success = response.status === 200;
+        if (success) {
+          navigate("/dashboard");
+          console.log("Submitted!!");
+        }
+      });
     } catch (err) {
       console.log(err);
     }

@@ -4,6 +4,7 @@ import ChatContainer from "../../components/ChatContainer/ChatContainer";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import "./dashboard.css";
+import UserService from "../../UserService";
 
 interface User {
   _id: string;
@@ -32,13 +33,13 @@ const Dashboard: React.FC = () => {
   const getUser = async () => {
     try {
       console.log(userId);
-      const response = await axios
-        .get(`http://localhost:3000/user/${userId}`)
-        .then((response) => {
-          console.log("Yes!");
-          setUser(response.data);
-          console.log(setUser);
-        });
+      // const response = await axios
+      //   .get(`http://localhost:3000/user/${userId}`)
+      const response = await UserService.getUser(userId).then((response) => {
+        console.log("Yes!");
+        setUser(response.data);
+        console.log(setUser);
+      });
     } catch (error) {
       console.log(error);
     }
@@ -46,9 +47,7 @@ const Dashboard: React.FC = () => {
 
   const getAllUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/users", {
-        params: { userId },
-      });
+      const response = await UserService.getUsers();
       setUsers(response.data);
     } catch (error) {
       console.log(error);
@@ -90,7 +89,7 @@ const Dashboard: React.FC = () => {
   };
 
   const filteredUsers = users.filter((user) => {
-    console.log(user);
+    // console.log(user);
     return user._id !== userId;
   });
 
