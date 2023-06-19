@@ -116,9 +116,10 @@ describe("Users tests", () => {
       email: "user2@test.com",
       password: "password123",
     });
-
-    user1.matches.push(user2._id);
-    await user1.save();
+    if (user1.matches) {
+      user1.matches.push(user2._id);
+      await user1.save();
+    }
 
     const response = await request(app)
       .put("/addmatch")
@@ -141,9 +142,10 @@ describe("Users tests", () => {
       email: "user2@test.com",
       password: "password123",
     });
-
-    user1.matches.push(user2._id);
-    await user1.save();
+    if (user1.matches) {
+      user1.matches.push(user2._id);
+      await user1.save();
+    }
 
     const response = await request(app)
       .get("/matchedusers")

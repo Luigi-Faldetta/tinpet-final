@@ -116,8 +116,10 @@ describe("Users tests", () => {
             email: "user2@test.com",
             password: "password123",
         });
-        user1.matches.push(user2._id);
-        yield user1.save();
+        if (user1.matches) {
+            user1.matches.push(user2._id);
+            yield user1.save();
+        }
         const response = yield (0, supertest_1.default)(app_1.default)
             .put("/addmatch")
             .send({ userId: user1._id, matchedUserId: user2._id });
@@ -135,8 +137,10 @@ describe("Users tests", () => {
             email: "user2@test.com",
             password: "password123",
         });
-        user1.matches.push(user2._id);
-        yield user1.save();
+        if (user1.matches) {
+            user1.matches.push(user2._id);
+            yield user1.save();
+        }
         const response = yield (0, supertest_1.default)(app_1.default)
             .get("/matchedusers")
             .query({ userIds: JSON.stringify([user1._id.toString()]) });

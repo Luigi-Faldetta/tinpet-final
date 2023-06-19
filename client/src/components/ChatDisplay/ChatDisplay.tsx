@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import "./chat-display.css";
 import MessageService from "../../Services/MessageService";
 
-interface User {
+export interface User {
   _id: string;
   ownerName: string;
   avatar: string;
@@ -23,10 +23,15 @@ interface Message {
 interface ChatDisplayProps {
   user: User;
   clickedUser: User;
+  userId: string;
 }
 
-const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
-  const userId = user?._id;
+const ChatDisplay: React.FC<ChatDisplayProps> = ({
+  user,
+  clickedUser,
+  userId,
+}) => {
+  // const userId = user?._id;
   const clickedUserId = clickedUser?._id;
   const [usersMessages, setUsersMessages] = useState<Message[]>([]);
   const [clickedUsersMessages, setClickedUsersMessages] = useState<Message[]>(
@@ -44,7 +49,6 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
       console.log(error);
     }
   };
-  console.log(usersMessages, "user message are empty");
 
   const getClickedUsersMessages = async () => {
     try {
@@ -59,7 +63,7 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
       console.log(error);
     }
   };
-
+  // console.log(clickedUserId, "here");
   useEffect(() => {
     getUsersMessages();
     getClickedUsersMessages();
@@ -92,11 +96,11 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
 
   clickedUsersMessages?.forEach((message) => {
     const formattedMessage = {
-      fromUser: user?.ownerName || "",
+      fromUser: clickedUser?.ownerName || "",
       // img: clickedUser?.avatar || "",
       message: message.message,
       time: message.time,
-      toUser: clickedUser.ownerName || "",
+      toUser: user.ownerName || "",
     };
     messages.push(formattedMessage);
   });
@@ -106,8 +110,15 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
   );
 
   return (
-    <>
-      <Chat descendingOrderMessages={descendingOrderMessages} />
+    <div>
+      <div className='msg'>
+        <Chat
+          descendingOrderMessages={descendingOrderMessages}
+          user={user}
+          clickedUserId={clickedUserId}
+          userId={userId}
+        />
+      </div>
       <ChatInput
         user={user}
         clickedUser={clickedUser}
@@ -116,7 +127,7 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
         setUsersMessages={setUsersMessages}
         setClickedUSerMessages={setClickedUsersMessages}
       />
-    </>
+    </div>
   );
 };
 
