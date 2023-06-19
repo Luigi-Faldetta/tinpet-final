@@ -25,10 +25,11 @@ const Dashboard: React.FC = () => {
     "AuthToken",
     "UserId",
   ]);
-
   const [lastDirection, setLastDirection] = useState<string | null>(null);
+  // console.log(cookies, "coo");
 
   const userId: string = cookies.UserId;
+  // console.log(userId, "UUUU");
 
   const getUser = async () => {
     try {
@@ -84,24 +85,23 @@ const Dashboard: React.FC = () => {
     // console.log(user);
     return user._id !== userId;
   });
-
   return (
     <>
       {user && (
-        <div className="dashboard">
-          <ChatContainer currentUser={user} />
-          <div className="swiper-container">
-            <div className="card-container">
+        <div className='dashboard'>
+          <ChatContainer currentUser={user} userId={userId} />
+          <div className='swiper-container'>
+            <div className='card-container'>
               {filteredUsers.map((user) => (
                 <TinderCard
-                  className="swipe"
+                  className='swipe'
                   key={user._id}
                   onSwipe={(dir) => swiped(dir, userId, user._id)}
                   onCardLeftScreen={() => outOfFrame(user.ownerName)}
                 >
                   <div
                     style={{ backgroundImage: "url(" + user.avatar + ")" }}
-                    className="card"
+                    className='card'
                   >
                     <h3>
                       {user.dogName + ", Age: "}

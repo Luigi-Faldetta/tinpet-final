@@ -10,4 +10,28 @@
   padding: 1.3rem;
   height: 60vh;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  border: 1px solid black;
+  width: 60%;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.576);
+  align-self: flex-end;
+  margin: 10px;
+  word-wrap: break-word;
+  padding: 3px;
+}
+
+.incoming {
+  align-self: flex-start;
+  border: 1px solid black;
+  width: 60%;
+  border-radius: 10px;
+  background-color: rgb(27, 180, 17);
+  margin: 10px;
+  word-wrap: break-word;
+  padding: 3px;
 }

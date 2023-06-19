@@ -14,9 +14,13 @@ interface User {
 
 interface ChatContainerProps {
   currentUser: User;
+  userId: string;
 }
 
-const ChatContainer: React.FC<ChatContainerProps> = ({ currentUser }) => {
+const ChatContainer: React.FC<ChatContainerProps> = ({
+  currentUser,
+  userId,
+}) => {
   const [clickedUser, setClickedUser] = useState<User | null>(null);
 
   const handleSetClickedUser = (user: User) => {
@@ -24,14 +28,14 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ currentUser }) => {
   };
 
   return (
-    <div className="chat-container">
+    <div className='chat-container'>
       <ChatHeader user={currentUser} />
       <div>
-        <button className="option" onClick={() => setClickedUser(null)}>
+        <button className='option' onClick={() => setClickedUser(null)}>
           Matches
         </button>
 
-        <button className="option" disabled={!clickedUser}>
+        <button className='option' disabled={!clickedUser}>
           Chat
         </button>
       </div>
@@ -43,7 +47,11 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ currentUser }) => {
         />
       )}
       {clickedUser && (
-        <ChatDisplay user={currentUser} clickedUser={clickedUser} />
+        <ChatDisplay
+          user={currentUser}
+          clickedUser={clickedUser}
+          userId={userId}
+        />
       )}
     </div>
   );

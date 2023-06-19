@@ -4,7 +4,7 @@ import { User } from "../model/users";
 import { Response, Request } from "express";
 import { ObjectId } from "mongodb";
 
-interface UserInterface {
+export interface UserInterface {
   _id?: ObjectId;
   email?: string;
   password?: string;
