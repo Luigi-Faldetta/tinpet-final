@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./matches-display.css";
-import UserService from "../../UserService";
+import UserService from "../../Services/UserService";
 
 interface User {
   _id: string;
