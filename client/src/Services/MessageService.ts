@@ -12,10 +12,16 @@ const MessageService = {
       console.log(error);
     }
   },
-  postMsg: async (message: string, userOneId: string, userTwoId: string) => {
+  postMsg: async (
+    message: string,
+    time: string,
+    userOneId: string,
+    userTwoId: string
+  ) => {
     try {
       const response = await axios.post(`http://localhost:3000/message`, {
         message: message,
+        time: time,
         userId: userOneId,
         correspondingUserId: userTwoId,
       });

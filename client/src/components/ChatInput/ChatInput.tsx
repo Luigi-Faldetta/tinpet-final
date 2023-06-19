@@ -48,11 +48,12 @@ const ChatInput: React.FC<ChatInputProps> = ({
       to_userId: clickedUserId,
       message: textArea,
     };
-
+    console.log(message.timestamp);
     try {
       // await axios.post("http://localhost:3000/message", { message });
       const response = await MessageService.postMsg(
         message.message,
+        message.timestamp,
         userId,
         clickedUserId
       );

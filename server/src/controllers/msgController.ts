@@ -57,10 +57,11 @@ export const getMsg = async (req: Request, res: Response) => {
 // };
 export const postMsg = async (req: Request, res: Response) => {
   try {
-    const { message, userId, correspondingUserId } = req.body;
-    // console.log(req.body);
+    const { message, time, userId, correspondingUserId } = req.body;
+
     const insertedMessage = await MessagesTin.create({
       message: message,
+      time: time,
       fromUser: userId,
       toUser: correspondingUserId,
     });

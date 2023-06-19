@@ -62,10 +62,10 @@ exports.getMsg = getMsg;
 // };
 const postMsg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { message, userId, correspondingUserId } = req.body;
-        // console.log(req.body);
+        const { message, time, userId, correspondingUserId } = req.body;
         const insertedMessage = yield msg_1.MessagesTin.create({
             message: message,
+            time: time,
             fromUser: userId,
             toUser: correspondingUserId,
         });
