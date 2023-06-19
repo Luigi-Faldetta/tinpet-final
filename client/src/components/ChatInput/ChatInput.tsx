@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./chat-input.css";
-import MessageService from "../../MessageService";
+import MessageService from "../../Services/MessageService";
 
 interface User {
   _id: string;
@@ -10,15 +10,19 @@ interface User {
 }
 
 interface Message {
+  // message: string;
+  // timestamp: string;
+  // img: string;
+  // ownerName: string;
+  fromUser: string;
   message: string;
-  timestamp: string;
-  img: string;
-  ownerName: string;
+  time: string;
+  toUser: string;
 }
 
 interface ChatInputProps {
-  user: User | null;
-  clickedUser: User | null;
+  user: User;
+  clickedUser: User;
   getUserMessages: () => void;
   getClickedUsersMessages: () => void;
   setUsersMessages: React.Dispatch<React.SetStateAction<Message[]>>;
@@ -34,8 +38,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
   setClickedUSerMessages,
 }) => {
   const [textArea, setTextArea] = useState("");
-  const userId = user?._id;
-  const clickedUserId = clickedUser?._id;
+  const userId = user._id;
+  const clickedUserId = clickedUser._id;
 
   const addMessage = async () => {
     const message = {
@@ -47,8 +51,11 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
     try {
       // await axios.post("http://localhost:3000/message", { message });
-      const response = await MessageService.postMsg(message.message);
-
+      const response = await MessageService.postMsg(
+        message.message,
+        userId,
+        clickedUserId
+      );
       // console.log(response);
 
       // setUsersMessages(messageToDisplayUser);

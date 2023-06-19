@@ -4,7 +4,7 @@ import ChatContainer from "../../components/ChatContainer/ChatContainer";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import "./dashboard.css";
-import UserService from "../../UserService";
+import UserService from "../../Services/UserService";
 
 interface User {
   _id: string;

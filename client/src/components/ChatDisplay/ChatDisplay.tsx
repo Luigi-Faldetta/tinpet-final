@@ -3,7 +3,7 @@ import ChatInput from "../ChatInput/ChatInput";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "./chat-display.css";
-import MessageService from "../../MessageService";
+import MessageService from "../../Services/MessageService";
 
 interface User {
   _id: string;
@@ -12,10 +12,12 @@ interface User {
 }
 
 interface Message {
+  fromUser: string;
   message: string;
-  timestamp: string;
-  img: string;
-  ownerName: string;
+  time: string;
+  toUser: string;
+  // img: string;
+  // ownerName: string;
 }
 
 interface ChatDisplayProps {
@@ -35,7 +37,6 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
     try {
       const response = await MessageService.getMsg(userId, clickedUserId);
       setUsersMessages(response.data);
-      console.log(usersMessages);
       // const response = await axios.get("http://localhost:3000/messages", {
       //   params: { userId: userId, correspondingUserId: clickedUserId },
       // });
@@ -43,6 +44,7 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
       console.log(error);
     }
   };
+  console.log(usersMessages, "user message are empty");
 
   const getClickedUsersMessages = async () => {
     try {
@@ -64,34 +66,43 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({ user, clickedUser }) => {
   }, []);
 
   const messages: {
-    ownerName: string;
-    img: string;
+    // ownerName: string;
+    // img: string;
+    // message: string;
+    // timestamp: string;
+    fromUser: string;
     message: string;
-    timestamp: string;
+    time: string;
+    toUser: string;
   }[] = [];
 
   usersMessages?.forEach((message) => {
     const formattedMessage = {
-      ownerName: user?.ownerName || "",
-      img: user?.avatar || "",
+      // ownerName: user?.ownerName || "",
+      // img: user?.avatar || "",
+      // message: message.message,
+      // timestamp: message.time,
+      fromUser: user?.ownerName,
       message: message.message,
-      timestamp: message.timestamp,
+      time: message.time,
+      toUser: clickedUser.ownerName,
     };
     messages.push(formattedMessage);
   });
 
   clickedUsersMessages?.forEach((message) => {
     const formattedMessage = {
-      ownerName: clickedUser?.ownerName || "",
-      img: clickedUser?.avatar || "",
+      fromUser: user?.ownerName || "",
+      // img: clickedUser?.avatar || "",
       message: message.message,
-      timestamp: message.timestamp,
+      time: message.time,
+      toUser: clickedUser.ownerName || "",
     };
     messages.push(formattedMessage);
   });
 
   const descendingOrderMessages = messages?.sort((a, b) =>
-    a.timestamp.localeCompare(b.timestamp)
+    a.time.localeCompare(b.time)
   );
 
   return (

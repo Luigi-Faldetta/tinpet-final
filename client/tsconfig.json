@@ -18,7 +18,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["/Users/luigifaldetta/Downloads/tinpet-final/client/src"],
+  "include": ["src"],
   "exclude": [
     "node_modules",
     "build",

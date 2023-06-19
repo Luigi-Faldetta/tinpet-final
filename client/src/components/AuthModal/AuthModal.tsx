@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import "./auth-modal.css";
-import UserService from "../../UserService";
+import UserService from "../../Services/UserService";
 
 interface AuthModalProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
