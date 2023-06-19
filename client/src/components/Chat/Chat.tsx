@@ -1,6 +1,7 @@
 import React from "react";
 import "./chat.css";
 import { User } from "../ChatDisplay/ChatDisplay";
+import moment from "moment";
 
 interface Message {
   // ownerName: string;
@@ -44,6 +45,7 @@ const Chat: React.FC<ChatProps> = ({
               <p>{message.fromUser}</p>
             </div>
             <p>{message.message}</p>
+            <p>{moment(message.time).format("LTS")}</p>
           </div>
         ))}
       </div>

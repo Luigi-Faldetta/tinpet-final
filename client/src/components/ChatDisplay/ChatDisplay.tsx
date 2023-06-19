@@ -86,7 +86,7 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
       // img: user?.avatar || "",
       // message: message.message,
       // timestamp: message.time,
-      fromUser: user?.ownerName,
+      fromUser: user.ownerName,
       message: message.message,
       time: message.time,
       toUser: clickedUser.ownerName,
