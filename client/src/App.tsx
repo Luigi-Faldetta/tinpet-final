@@ -10,7 +10,7 @@ interface CookiesType {
   AuthToken?: string;
 }
 
-//I love pizza
+//I love pizza with pineapple
 
 const App: React.FC = () => {
   const [cookies] = useCookies<string>(["user"]);
