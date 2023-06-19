@@ -27,9 +27,12 @@ const Home: React.FC = () => {
         <div className="home">
           <h1 className="primary-title">TinPet</h1>
           <p>
-            Your pet is lonely and has no friends? TinPet is the solution, here
-            you can contact other people who are also looking for friends for
-            their pets, where you can make friends .... among other things...
+            Your dog is lonely and has no friends? TinPet is the solution! Here,
+            you can connect with like-minded dog owners who are also looking for
+            companionship and opportunities to go on walks together. Make new
+            friends for your furry pals and enjoy the company of other dog
+            lovers. Join TinPet today and start creating meaningful connections
+            in your local dog community.
           </p>
           <button className="btn-primary" onClick={handleClick}>
             {authToken ? "Sign Out" : "Create Account"}
