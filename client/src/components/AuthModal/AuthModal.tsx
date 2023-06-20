@@ -112,7 +112,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
           />
         )}
 
-        <input type="submit" className="btn-secondary" />
+        <input type="submit" className="btn-secondary" alt="sumbit" />
         <p>{error}</p>
       </form>
       <hr />
