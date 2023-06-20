@@ -1,4 +1,9 @@
 import axios from "axios";
+import { io } from "socket.io-client";
+const URL = "http://localhost:3333";
+
+export const socket = io(URL);
+// const socket = io(URL);
 
 const MessageService = {
   getMsg: async (userOneId: string, userTwoId: string) => {
@@ -6,7 +11,6 @@ const MessageService = {
       const response = await axios.get("http://localhost:3000/messages", {
         params: { userId: userOneId, correspondingUserId: userTwoId },
       });
-      console.log(response.data.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -25,7 +29,9 @@ const MessageService = {
         userId: userOneId,
         correspondingUserId: userTwoId,
       });
-      //   console.log(response);
+
+      // socket.emit("newMessage");
+
       return response.data;
     } catch (error) {
       throw error;

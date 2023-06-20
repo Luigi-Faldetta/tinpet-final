@@ -17,6 +17,11 @@ interface User {
   gender: string;
   avatar: string;
 }
+declare global {
+  interface Window {
+    my_modal_5: HTMLDialogElement;
+  }
+}
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -33,13 +38,10 @@ const Dashboard: React.FC = () => {
 
   const getUser = async () => {
     try {
-      console.log(userId);
       // const response = await axios
       //   .get(`http://localhost:3000/user/${userId}`)
       const response = await UserService.getUser(userId).then((response) => {
-        console.log("Yes!");
         setUser(response.data);
-        console.log(setUser);
       });
     } catch (error) {
       console.log(error);
@@ -103,12 +105,8 @@ const Dashboard: React.FC = () => {
                     style={{ backgroundImage: "url(" + user.avatar + ")" }}
                     className='card'
                   >
-                    <h3>
-                      {user.dogName + ", Age: "}
-                      {user.dogAge}
-                      {user._id}
-                    </h3>
-                    <h3>{user.about}</h3>
+                    {" "}
+                    info: {(user.ownerAge, user.ownerName)}
                   </div>
                 </TinderCard>
               ))}

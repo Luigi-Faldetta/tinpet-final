@@ -1,23 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./chat-input.css";
-import MessageService from "../../Services/MessageService";
+import MessageService, { socket } from "../../Services/MessageService";
+import io from "socket.io-client";
+import { Message } from "../ChatDisplay/ChatDisplay";
+
+// const socket = io("http://localhost:3000");
 
 interface User {
   _id: string;
   avatar: string;
   ownerName: string;
-}
-
-interface Message {
-  // message: string;
-  // timestamp: string;
-  // img: string;
-  // ownerName: string;
-  fromUser: string;
-  message: string;
-  time: string;
-  toUser: string;
 }
 
 interface ChatInputProps {
@@ -27,6 +20,8 @@ interface ChatInputProps {
   getClickedUsersMessages: () => void;
   setUsersMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   setClickedUSerMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  usersMessages: Message[];
+  clickedUsersMessages: Message[];
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
@@ -36,48 +31,59 @@ const ChatInput: React.FC<ChatInputProps> = ({
   getClickedUsersMessages,
   setUsersMessages,
   setClickedUSerMessages,
+  usersMessages,
+  clickedUsersMessages,
 }) => {
   const [textArea, setTextArea] = useState("");
   const userId = user._id;
   const clickedUserId = clickedUser._id;
 
   const addMessage = async () => {
+    if (textArea === "") return;
     const message = {
-      timestamp: new Date().toISOString(),
-      from_userId: userId,
-      to_userId: clickedUserId,
+      time: new Date().toISOString(),
+      fromUser: userId,
+      toUser: clickedUserId,
       message: textArea,
     };
-    console.log(message.timestamp);
     try {
-      // await axios.post("http://localhost:3000/message", { message });
       const response = await MessageService.postMsg(
         message.message,
-        message.timestamp,
+        message.time,
         userId,
         clickedUserId
       );
-      // console.log(response);
 
-      // setUsersMessages(messageToDisplayUser);
-      // setClickedUSerMessages(messageToDisplayClickedUser);
-      getUserMessages();
-      getClickedUsersMessages();
+      // getUserMessages();
+      // getClickedUsersMessages();
+      const updatedUserMessages = [...usersMessages, message];
+      setUsersMessages(updatedUserMessages);
+      socket.emit("newMessage", { userId: userId, message });
       setTextArea("");
-
-      console.log(message.message);
     } catch (error) {
       console.log(error);
     }
   };
-
+  const handleKeyDown = (e: { key: string; preventDefault: () => void }) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addMessage();
+    }
+  };
+  // socket.on("newMessage", (message) => {
+  //   getUserMessages();
+  //   getClickedUsersMessages();
+  // });
+  // useEffect(() => {
+  // }, []);
   return (
-    <div className="chat-input">
+    <div className='chat-input'>
       <textarea
         value={textArea}
         onChange={(e) => setTextArea(e.target.value)}
+        onKeyDown={handleKeyDown}
       ></textarea>
-      <button className="btn-secondary" onClick={addMessage}>
+      <button className='btn' onClick={addMessage}>
         Submit
       </button>
     </div>

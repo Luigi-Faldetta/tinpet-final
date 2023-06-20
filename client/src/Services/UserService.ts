@@ -1,4 +1,7 @@
 import axios from "axios";
+import io from "socket.io-client";
+
+// const socket = io("http://localhost:3000");
 
 const UserService = {
   getUsers: () => {
@@ -45,12 +48,11 @@ const UserService = {
   },
   updateMatch: async (userId: string, matchedUserId: string) => {
     try {
-      console.log(userId);
       await axios.put("http://localhost:3000/addmatch", {
         userId,
         matchedUserId,
       });
-      axios.get(`http://localhost:3000/user/${userId}`);
+      // socket.emit("matchUpdated", { userId });
     } catch (error) {
       console.log(error);
     }

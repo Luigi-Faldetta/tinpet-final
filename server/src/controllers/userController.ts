@@ -21,7 +21,6 @@ export interface UserInterface {
 
 export const postUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  // console.log(req.body);
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -51,8 +50,6 @@ export const postUser = async (req: Request, res: Response) => {
     console.log(err);
   }
 };
-
-// login existing user
 
 export const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -112,7 +109,6 @@ export const getUser = async (req: Request, res: Response) => {
   }
 };
 
-// //update user matched
 export const updateMatch = async (req: Request, res: Response) => {
   const { userId, matchedUserId } = req.body;
 
@@ -130,8 +126,6 @@ export const updateMatch = async (req: Request, res: Response) => {
   }
 };
 
-// get all users
-
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
     const returnedUsers = await User.find({});
@@ -142,7 +136,6 @@ export const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
-// // Update account /onboarding
 export const updateUser = async (req: Request, res: Response) => {
   const user = req.body;
 
@@ -164,8 +157,6 @@ export const updateUser = async (req: Request, res: Response) => {
     const updatedUser = await User.findOneAndUpdate(query, updateDocument, {
       new: true,
     });
-    // console.log("here");
-    // console.log(updatedUser);
 
     if (updatedUser) {
       res.status(200).send(updatedUser);
@@ -181,7 +172,6 @@ export const updateUser = async (req: Request, res: Response) => {
 export const getMatchedUsers = async (req: Request, res: Response) => {
   const userIds = req.query.userIds;
   console.log(req);
-  console.log(req.query);
   if (typeof userIds === "string") {
     try {
       const parsedUserIds = JSON.parse(userIds);
