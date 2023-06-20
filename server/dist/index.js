@@ -1,12 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./loadEnv.js");
-const { URI, URI_DB } = process.env;
-const app_1 = __importDefault(require("./app"));
+const app_1 = require("./app");
 const PORT = 3000;
-app_1.default.listen(PORT, () => {
+app_1.server.listen(PORT, () => {
     console.log(`☕ Express server listening on port: ${PORT}`);
 });

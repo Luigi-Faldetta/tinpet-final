@@ -1,4 +1,5 @@
 import express from "express";
+import { io } from "./app";
 export const router = express.Router();
 import {
   postUser,
