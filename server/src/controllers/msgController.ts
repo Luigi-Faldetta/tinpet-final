@@ -8,7 +8,6 @@ export const getMsg = async (req: Request, res: Response) => {
     const query = { fromUser: userId, toUser: correspondingUserId };
 
     const foundMessages = await MessagesTin.find(query);
-    console.log(foundMessages);
     res.status(201).json({ message: "ok", data: foundMessages });
   } catch (error: any) {
     res.status(500).send(error.message);
@@ -26,7 +25,7 @@ export const postMsg = async (req: Request, res: Response) => {
       fromUser: userId,
       toUser: correspondingUserId,
     });
-    // console.log(insertedMessage);
+
     console.log("All good!");
     return res.status(201).json({ message: "ok", data: insertedMessage });
   } catch (error: any) {

@@ -2,7 +2,9 @@ import Chat from "../Chat/Chat";
 import ChatInput from "../ChatInput/ChatInput";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import io from "socket.io-client";
 import "./chat-display.css";
+// const socket = io("http://localhost:3000");
 import MessageService from "../../Services/MessageService";
 
 export interface User {
@@ -11,13 +13,11 @@ export interface User {
   avatar: string;
 }
 
-interface Message {
+export interface Message {
   fromUser: string;
   message: string;
   time: string;
   toUser: string;
-  // img: string;
-  // ownerName: string;
 }
 
 interface ChatDisplayProps {
@@ -62,6 +62,13 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
   useEffect(() => {
     getUsersMessages();
     getClickedUsersMessages();
+    // socket.on("newMessage", () => {
+    //   getUsersMessages();
+    //   getClickedUsersMessages();
+    // });
+    return () => {
+      // socket.off("newMessage");
+    };
   }, []);
 
   const messages: {
@@ -120,7 +127,9 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
         getUserMessages={getUsersMessages}
         getClickedUsersMessages={getClickedUsersMessages}
         setUsersMessages={setUsersMessages}
+        usersMessages={usersMessages}
         setClickedUSerMessages={setClickedUsersMessages}
+        clickedUsersMessages={clickedUsersMessages}
       />
     </div>
   );

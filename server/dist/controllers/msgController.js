@@ -16,7 +16,6 @@ const getMsg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { userId, correspondingUserId } = req.query;
         const query = { fromUser: userId, toUser: correspondingUserId };
         const foundMessages = yield msg_1.MessagesTin.find(query);
-        console.log(foundMessages);
         res.status(201).json({ message: "ok", data: foundMessages });
     }
     catch (error) {
@@ -34,7 +33,6 @@ const postMsg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             fromUser: userId,
             toUser: correspondingUserId,
         });
-        // console.log(insertedMessage);
         console.log("All good!");
         return res.status(201).json({ message: "ok", data: insertedMessage });
     }

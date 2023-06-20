@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
-const app_1 = __importDefault(require("./app"));
+const app_1 = require("./app");
 const mongoose_1 = __importDefault(require("mongoose"));
 const users_1 = require("./model/users");
 const msg_1 = require("./model/msg");
@@ -35,14 +35,14 @@ describe("Users tests", () => {
     }));
     it("should create a new user", () => __awaiter(void 0, void 0, void 0, function* () {
         const data = { email: "test@test.com", password: "password123" };
-        const response = yield (0, supertest_1.default)(app_1.default).post("/signup").send(data);
+        const response = yield (0, supertest_1.default)(app_1.app).post("/signup").send(data);
         const user = yield users_1.User.findOne({ email: data.email });
         if (user) {
             yield expect(user.email).toBe(data.email);
         }
     }));
     it("should return 409 if user already exists", () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield (0, supertest_1.default)(app_1.default)
+        const response = yield (0, supertest_1.default)(app_1.app)
             .post("/signup")
             .send({ email: "test@test.com", password: "password123" });
         expect(response.status).toBe(409);
@@ -51,7 +51,7 @@ describe("Users tests", () => {
     it("should login a user and return a token", () => __awaiter(void 0, void 0, void 0, function* () {
         const data = { email: "test@test.com", password: "password123" };
         yield users_1.User.create(data);
-        const response = yield (0, supertest_1.default)(app_1.default).post("/login").send(data);
+        const response = yield (0, supertest_1.default)(app_1.app).post("/login").send(data);
         expect(response.status).toBe(201);
         expect(response.body).toHaveProperty("token");
         expect(response.body).toHaveProperty("userId");
@@ -59,7 +59,7 @@ describe("Users tests", () => {
     it("should return 400 for invalid credentials during login", () => __awaiter(void 0, void 0, void 0, function* () {
         const data = { email: "test@test.com", password: "password123" };
         yield users_1.User.create(data);
-        const response = yield (0, supertest_1.default)(app_1.default)
+        const response = yield (0, supertest_1.default)(app_1.app)
             .post("/login")
             .send({ email: "testt@test.com", password: "password123" });
         expect(response.status).toBe(400);
@@ -84,7 +84,7 @@ describe("Users tests", () => {
             about: "I love dogs!",
             matches: [],
         };
-        const response = yield (0, supertest_1.default)(app_1.default).put("/updateUser").send(updatedData);
+        const response = yield (0, supertest_1.default)(app_1.app).put("/updateUser").send(updatedData);
         expect(response.status).toBe(200);
         expect(response.body).toEqual(updatedData);
     }));
@@ -93,7 +93,7 @@ describe("Users tests", () => {
             email: "test@test.com",
             password: "password123",
         });
-        const response = yield (0, supertest_1.default)(app_1.default).get(`/user/${user._id}`);
+        const response = yield (0, supertest_1.default)(app_1.app).get(`/user/${user._id}`);
         expect(response.status).toBe(200);
         expect(response.body).toEqual({
             _id: user._id.toString(),
@@ -120,7 +120,7 @@ describe("Users tests", () => {
             user1.matches.push(user2._id);
             yield user1.save();
         }
-        const response = yield (0, supertest_1.default)(app_1.default)
+        const response = yield (0, supertest_1.default)(app_1.app)
             .put("/addmatch")
             .send({ userId: user1._id, matchedUserId: user2._id });
         expect(response.status).toBe(200);
@@ -141,7 +141,7 @@ describe("Users tests", () => {
             user1.matches.push(user2._id);
             yield user1.save();
         }
-        const response = yield (0, supertest_1.default)(app_1.default)
+        const response = yield (0, supertest_1.default)(app_1.app)
             .get("/matchedusers")
             .query({ userIds: JSON.stringify([user1._id.toString()]) });
         expect(response.status).toBe(200);
@@ -180,7 +180,7 @@ describe("Messages test", () => {
             toUser: user2._id,
             message: "New message",
         };
-        const response = yield (0, supertest_1.default)(app_1.default).post("/message").send(newMessage);
+        const response = yield (0, supertest_1.default)(app_1.app).post("/message").send(newMessage);
         expect(response.status).toBe(201);
         console.log(response.body.data);
         expect(response.body.data.message).toBe(newMessage.message);
@@ -198,7 +198,7 @@ describe("Messages test", () => {
             toUser: user1._id,
             message: "Hi User1",
         });
-        const response = yield (0, supertest_1.default)(app_1.default).get("/messages").send({
+        const response = yield (0, supertest_1.default)(app_1.app).get("/messages").send({
             fromUser: user1._id,
             toUser: user2._id,
         });

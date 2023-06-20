@@ -18,7 +18,6 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const users_1 = require("../model/users");
 const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
-    // console.log(req.body);
     const hashedPassword = yield bcrypt_1.default.hash(password, 10);
     try {
         const existingUser = yield users_1.User.findOne({ email }).maxTimeMS(15000);
@@ -42,7 +41,6 @@ const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.postUser = postUser;
-// login existing user
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     try {
@@ -103,7 +101,6 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getUser = getUser;
-// //update user matched
 const updateMatch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId, matchedUserId } = req.body;
     try {
@@ -120,7 +117,6 @@ const updateMatch = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.updateMatch = updateMatch;
-// get all users
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const returnedUsers = yield users_1.User.find({});
@@ -132,7 +128,6 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getAllUsers = getAllUsers;
-// // Update account /onboarding
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.body;
     try {
@@ -152,8 +147,6 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const updatedUser = yield users_1.User.findOneAndUpdate(query, updateDocument, {
             new: true,
         });
-        // console.log("here");
-        // console.log(updatedUser);
         if (updatedUser) {
             res.status(200).send(updatedUser);
         }
@@ -170,7 +163,6 @@ exports.updateUser = updateUser;
 const getMatchedUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userIds = req.query.userIds;
     console.log(req);
-    console.log(req.query);
     if (typeof userIds === "string") {
         try {
             const parsedUserIds = JSON.parse(userIds);

@@ -56,7 +56,6 @@ const AuthModal: React.FC<AuthModalProps> = ({
           const userId = response.data.data;
           setCookie("UserId", userId);
           setCookie("AuthToken", token);
-          console.log(response.data);
           navigate("/onboarding");
         }
         if (success && !isSignUp) {
@@ -64,7 +63,6 @@ const AuthModal: React.FC<AuthModalProps> = ({
           const userId = response.data.userId;
           setCookie("UserId", userId);
           setCookie("AuthToken", token);
-          console.log(response.data);
           navigate("/dashboard");
         }
 
@@ -76,43 +74,43 @@ const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   return (
-    <div className="auth-modal">
+    <div className='auth-modal'>
       <div onClick={handleClick}>
-        <CloseIcon className="close-icon" />
+        <CloseIcon className='close-icon' />
       </div>
       <h2>{isSignUp ? "CREATE AN ACCOUNT" : "LOG IN"}</h2>
 
       <form onSubmit={handleSubmit}>
         <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="email"
+          type='email'
+          id='email'
+          name='email'
+          placeholder='email'
           required={true}
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="password"
+          type='password'
+          id='password'
+          name='password'
+          placeholder='password'
           required={true}
           onChange={(e) => setPassword(e.target.value)}
         />
 
         {isSignUp && (
           <input
-            type="password"
-            id="password-check"
-            name="password-check"
-            placeholder="confirm your password"
+            type='password'
+            id='password-check'
+            name='password-check'
+            placeholder='confirm your password'
             required={true}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         )}
 
-        <input type="submit" className="btn-secondary" />
+        <input type='submit' className='btn-secondary' />
         <p>{error}</p>
       </form>
       <hr />
