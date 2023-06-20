@@ -42,42 +42,42 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const clickedUserId = clickedUser._id;
 
   const addMessage = async () => {
+    if (textArea === "") return;
     const message = {
       timestamp: new Date().toISOString(),
       from_userId: userId,
       to_userId: clickedUserId,
       message: textArea,
     };
-    console.log(message.timestamp);
     try {
-      // await axios.post("http://localhost:3000/message", { message });
       const response = await MessageService.postMsg(
         message.message,
         message.timestamp,
         userId,
         clickedUserId
       );
-      // console.log(response);
 
-      // setUsersMessages(messageToDisplayUser);
-      // setClickedUSerMessages(messageToDisplayClickedUser);
       getUserMessages();
       getClickedUsersMessages();
       setTextArea("");
-
-      console.log(message.message);
     } catch (error) {
       console.log(error);
     }
   };
-
+  const handleKeyDown = (e: { key: string; preventDefault: () => void }) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addMessage();
+    }
+  };
   return (
-    <div className="chat-input">
+    <div className='chat-input'>
       <textarea
         value={textArea}
         onChange={(e) => setTextArea(e.target.value)}
+        onKeyDown={handleKeyDown}
       ></textarea>
-      <button className="btn-secondary" onClick={addMessage}>
+      <button className='btn-secondary' onClick={addMessage}>
         Submit
       </button>
     </div>

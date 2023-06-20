@@ -33,13 +33,10 @@ const Dashboard: React.FC = () => {
 
   const getUser = async () => {
     try {
-      console.log(userId);
       // const response = await axios
       //   .get(`http://localhost:3000/user/${userId}`)
       const response = await UserService.getUser(userId).then((response) => {
-        console.log("Yes!");
         setUser(response.data);
-        console.log(setUser);
       });
     } catch (error) {
       console.log(error);

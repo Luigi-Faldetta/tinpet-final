@@ -45,7 +45,6 @@ const UserService = {
   },
   updateMatch: async (userId: string, matchedUserId: string) => {
     try {
-      console.log(userId);
       await axios.put("http://localhost:3000/addmatch", {
         userId,
         matchedUserId,

@@ -6,7 +6,6 @@ const MessageService = {
       const response = await axios.get("http://localhost:3000/messages", {
         params: { userId: userOneId, correspondingUserId: userTwoId },
       });
-      console.log(response.data.data);
       return response.data;
     } catch (error) {
       console.log(error);

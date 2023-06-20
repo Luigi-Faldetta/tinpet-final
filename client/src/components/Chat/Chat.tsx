@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "./chat.css";
 import { User } from "../ChatDisplay/ChatDisplay";
 import moment from "moment";
@@ -26,11 +26,15 @@ const Chat: React.FC<ChatProps> = ({
   clickedUserId,
   userId,
 }) => {
-  console.log(clickedUserId, "clicked");
-  console.log(user._id, "user", userId);
+  const chatRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [descendingOrderMessages.length]);
   return (
     <>
-      <div className='chat-display'>
+      <div className='chat-display' ref={chatRef}>
         {descendingOrderMessages.map((message, index) => (
           <div
             className={`message ${
@@ -39,13 +43,14 @@ const Chat: React.FC<ChatProps> = ({
             key={index}
           >
             <div>
-              {/* <div className="img-container">
-                <img src={message.img} alt={`${message.fromUser} profile`} />
-              </div> */}
-              <p>{message.fromUser}</p>
+              <div className='senderName'>{message.fromUser}</div>
             </div>
-            <p>{message.message}</p>
-            <p>{moment(message.time).format("LTS")}</p>
+            <div className='content'>
+              <p>{message.message}</p>
+            </div>
+            <div className='time'>
+              <p>{moment(message.time).calendar()}</p>
+            </div>
           </div>
         ))}
       </div>

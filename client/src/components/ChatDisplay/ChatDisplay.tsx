@@ -54,11 +54,6 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
     try {
       const response = await MessageService.getMsg(clickedUserId, userId);
       setClickedUsersMessages(response.data);
-      console.log(clickedUsersMessages);
-      // const response = await axios.get("http://localhost:3000/messages", {
-      //   params: { userId: clickedUserId, correspondingUserId: userId },
-      // });
-      // setClickedUsersMessages(response.data);
     } catch (error) {
       console.log(error);
     }
