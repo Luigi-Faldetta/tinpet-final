@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import Home from "./pages/Home/Home";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Onboarding from "./pages/Onboarding/Onboarding";
+import "./index.css";
 
 interface CookiesType {
   AuthToken?: string;

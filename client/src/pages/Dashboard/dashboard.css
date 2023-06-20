@@ -1,3 +1,7 @@
+/* @import "tailwindcss/dist/tailwind.css";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities"; */
 .dashboard {
   display: flex;
   justify-content: space-between;

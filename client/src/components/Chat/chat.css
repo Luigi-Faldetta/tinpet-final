@@ -15,23 +15,41 @@
 }
 
 .message {
-  border: 1px solid black;
-  width: 60%;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.576);
+  /* border: 0.1px solid black; */
+  width: 70%;
+  border-radius: 15px;
+  background-color: rgb(101, 162, 254);
   align-self: flex-end;
   margin: 10px;
-  word-wrap: break-word;
+  word-break: break-word;
   padding: 3px;
 }
 
 .incoming {
   align-self: flex-start;
-  border: 1px solid black;
-  width: 60%;
-  border-radius: 10px;
-  background-color: rgb(27, 180, 17);
+  /* border: 0.1px solid black; */
+  width: 70%;
+  border-radius: 15px;
+  background-color: rgba(190, 190, 190, 0.539);
   margin: 10px;
-  word-wrap: break-word;
+  word-break: break-word;
   padding: 3px;
+}
+.senderName {
+  display: flex;
+  justify-content: start;
+  padding-left: 5px;
+  font-size: small;
+}
+.content {
+  display: flex;
+  justify-content: start;
+  padding-left: 5px;
+  font-size: large;
+}
+.time {
+  display: flex;
+  justify-content: end;
+  font-size: small;
+  padding-right: 5px;
 }

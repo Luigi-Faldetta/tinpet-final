@@ -17,6 +17,11 @@ interface User {
   gender: string;
   avatar: string;
 }
+declare global {
+  interface Window {
+    my_modal_5: HTMLDialogElement;
+  }
+}
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -33,13 +38,10 @@ const Dashboard: React.FC = () => {
 
   const getUser = async () => {
     try {
-      console.log(userId);
       // const response = await axios
       //   .get(`http://localhost:3000/user/${userId}`)
       const response = await UserService.getUser(userId).then((response) => {
-        console.log("Yes!");
         setUser(response.data);
-        console.log(setUser);
       });
     } catch (error) {
       console.log(error);
@@ -103,12 +105,28 @@ const Dashboard: React.FC = () => {
                     style={{ backgroundImage: "url(" + user.avatar + ")" }}
                     className='card'
                   >
-                    <h3>
-                      {user.dogName + ", Age: "}
-                      {user.dogAge}
-                      {user._id}
-                    </h3>
-                    <h3>{user.about}</h3>
+                    {/* Open the modal using ID.showModal() method */}
+                    <button
+                      className='btn'
+                      onClick={() => window.my_modal_5.showModal()}
+                    >
+                      open modal
+                    </button>
+                    <dialog
+                      id='my_modal_5'
+                      className='modal modal-bottom sm:modal-middle'
+                    >
+                      <form method='dialog' className='modal-box'>
+                        <h3 className='font-bold text-lg'>Hello!</h3>
+                        <p className='py-4'>
+                          Press ESC key or click the button below to close
+                        </p>
+                        <div className='modal-action'>
+                          {/* if there is a button in form, it will close the modal */}
+                          <button className='btn'>Close</button>
+                        </div>
+                      </form>
+                    </dialog>
                   </div>
                 </TinderCard>
               ))}
