@@ -111,6 +111,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
         )}
 
         <input type='submit' className='btn-secondary' />
+
         <p>{error}</p>
       </form>
       <hr />
