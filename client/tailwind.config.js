@@ -1,7 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-// import daisyui from 'daisyui';
+// import { defineConfig } from "vite";
+
 // export default defineConfig({
-//   purge: [],
 //   darkMode: false,
 //   theme: {
 //     extend: {},
@@ -9,7 +8,15 @@
 //   variants: {
 //     extend: {},
 //   },
-//   plugins: [
-//     daisyui,
-//   ],
+//   plugins: [daisyui],
 // });
+
+import daisyui from "daisyui";
+
+export default {
+  content: ["./src/**/*.{html,ts,tsx,js,jsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [daisyui],
+};
