@@ -14,15 +14,15 @@ interface CookiesType {
 const App: React.FC = () => {
   const [cookies] = useCookies<string>(["user"]);
 
-  const authToken: string | undefined = cookies.AuthToken;
+  // const authToken: string | undefined = cookies.AuthToken;
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home />} />
-          {authToken && <Route path='/dashboard' element={<Dashboard />} />}
-          {authToken && <Route path='/onboarding' element={<Onboarding />} />}
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/onboarding" element={<Onboarding />} />
         </Routes>
       </BrowserRouter>
     </>

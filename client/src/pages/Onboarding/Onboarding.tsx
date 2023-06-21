@@ -1,11 +1,11 @@
-//@ts-nocheck
 import Nav from "../../components/Nav/Nav";
 import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./onboarding.css";
-import { Cloudinary } from "@cloudinary/base";
+import { Cloudinary } from "@cloudinary/url-gen";
+import UserService from "../../Services/UserService";
 
 interface FormData {
   _id?: string;
@@ -22,7 +22,7 @@ interface FormData {
 const Onboarding: React.FC = () => {
   const navigate = useNavigate();
   const [cloudinaryScriptLoaded, setCloudinaryScriptLoaded] = useState(false);
-  const [cloudinary, setCloudinary] = useState<Cloudinary | null>(null);
+  const [cloudinary, setCloudinary] = useState<Cloudinary>();
   // const [cookies, setCookie] = useCookies(["user"]);
   const [cookies, setCookie] = useCookies();
   // console.log(cookies);
@@ -40,12 +40,12 @@ const Onboarding: React.FC = () => {
   });
 
   const openCloudinaryWidget = () => {
-    if (!cloudinary || !cloudinary.createUploadWidget) {
+    if (!cloudinary) {
       console.error("Cloudinary is not available");
       return;
     }
 
-    const widget = cloudinary.createUploadWidget(
+    const widget = (window as any).cloudinary.createUploadWidget(
       {
         cloudName: "doqmqgbym",
         uploadPreset: "mfrvfjgq",
@@ -80,7 +80,7 @@ const Onboarding: React.FC = () => {
 
   useEffect(() => {
     if (cloudinaryScriptLoaded) {
-      setCloudinary(window.cloudinary);
+      setCloudinary((window as any).cloudinary);
     }
   }, [cloudinaryScriptLoaded]);
 
@@ -130,6 +130,15 @@ const Onboarding: React.FC = () => {
     }
   };
 
+  const handleButtonClick = () => {
+    openCloudinaryWidget();
+    handleChange({
+      target: {
+        name: "avatar",
+      },
+    } as ChangeEvent<HTMLInputElement>);
+  };
+
   return (
     <>
       <Nav
@@ -147,13 +156,13 @@ const Onboarding: React.FC = () => {
             <input
               type="text"
               name="ownerName"
-              id="yourname"
+              id="first_name"
               placeholder="Your name"
               required={true}
               value={formData.ownerName}
               onChange={handleChange}
             />
-            <label>your age</label>
+            <label htmlFor="yourage">Your age</label>
             <input
               type="number"
               name="ownerAge"
@@ -163,7 +172,7 @@ const Onboarding: React.FC = () => {
               value={formData.ownerAge}
               onChange={handleChange}
             />
-            <label htmlFor="first_name">Your dog's name</label>
+            <label htmlFor="dogname">Your dog's name</label>
             <input
               type="text"
               name="dogName"
@@ -173,7 +182,7 @@ const Onboarding: React.FC = () => {
               value={formData.dogName}
               onChange={handleChange}
             />
-            <label>Your dog's age</label>
+            <label htmlFor="dogage">Your dog's age</label>
             <input
               type="number"
               name="dogAge"
@@ -229,7 +238,7 @@ const Onboarding: React.FC = () => {
               // required={true}
               onChange={handleChange}
             />
-            <button type="button" onClick={handleChange} name="avatar">
+            <button type="button" onClick={handleButtonClick} name="avatar">
               Select Profile Picture
             </button>
             <div className="photo-container">

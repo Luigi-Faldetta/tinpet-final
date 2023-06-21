@@ -90,20 +90,25 @@ const Dashboard: React.FC = () => {
   return (
     <>
       {user && (
-        <div className='dashboard'>
-          <ChatContainer currentUser={user} userId={userId} />
-          <div className='swiper-container'>
-            <div className='card-container'>
+        <div className="dashboard">
+          <ChatContainer
+            currentUser={user}
+            userId={userId}
+            data-testid="chat-container"
+          />
+          <div className="swiper-container">
+            <div className="card-container">
               {filteredUsers.map((user) => (
                 <TinderCard
-                  className='swipe'
+                  data-testid="tinder-card"
+                  className="swipe"
                   key={user._id}
                   onSwipe={(dir) => swiped(dir, userId, user._id)}
                   onCardLeftScreen={() => outOfFrame(user.ownerName)}
                 >
                   <div
                     style={{ backgroundImage: "url(" + user.avatar + ")" }}
-                    className='card'
+                    className="card"
                   >
                     {" "}
                     info: {(user.ownerAge, user.ownerName)}

@@ -70,20 +70,20 @@ const ChatInput: React.FC<ChatInputProps> = ({
       addMessage();
     }
   };
-  // socket.on("newMessage", (message) => {
-  //   getUserMessages();
-  //   getClickedUsersMessages();
-  // });
+  socket.on("newMessage", (message) => {
+    getUserMessages();
+    getClickedUsersMessages();
+  });
   // useEffect(() => {
   // }, []);
   return (
-    <div className='chat-input'>
+    <div className="chat-input">
       <textarea
         value={textArea}
         onChange={(e) => setTextArea(e.target.value)}
         onKeyDown={handleKeyDown}
       ></textarea>
-      <button className='btn' onClick={addMessage}>
+      <button className="btn" onClick={addMessage}>
         Submit
       </button>
     </div>
