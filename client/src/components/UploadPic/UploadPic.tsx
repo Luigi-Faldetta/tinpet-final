@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useDropzone, DropzoneOptions, FileWithPath } from "react-dropzone";
 
-type AcceptType = string | string[];
-
 const UploadPic: React.FC = () => {
   const [files, setFiles] = useState<FileWithPath[]>([]);
 

@@ -3,15 +3,10 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import "./chat-header.css";
-
-interface User {
-  ownerName: string;
-  dogName: string;
-  avatar: string;
-}
+import { UserInterface } from "../../interfaces";
 
 interface ChatHeaderProps {
-  user: User;
+  user: UserInterface;
 }
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({ user }) => {
@@ -28,14 +23,14 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ user }) => {
   };
 
   return (
-    <div className="chat-container-header">
-      <div className="profile">
-        <div className="img-container">
-          <img src={user.avatar} alt="user photo" />
+    <div className='chat-container-header'>
+      <div className='profile'>
+        <div className='img-container'>
+          <img src={user.avatar} alt='user photo' />
         </div>
         <h3>{user.ownerName}</h3>
       </div>
-      <i className="logout-icon" onClick={logout}>
+      <i className='logout-icon' onClick={logout}>
         <LogoutIcon />
       </i>
     </div>

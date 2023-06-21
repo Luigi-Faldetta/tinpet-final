@@ -1,18 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import "./chat.css";
-import { User } from "../ChatDisplay/ChatDisplay";
 import moment from "moment";
-
-interface Message {
-  fromUser: string;
-  message: string;
-  time: string;
-  toUser: string;
-}
+import { Message, UserInterface } from "../../interfaces";
 
 interface ChatProps {
   descendingOrderMessages: Message[];
-  user: User;
+  user: UserInterface;
   clickedUserId: String;
   userId: string;
 }
@@ -26,7 +19,7 @@ const Chat: React.FC<ChatProps> = ({ descendingOrderMessages, user }) => {
   }, [descendingOrderMessages.length]);
   return (
     <>
-      <div className="chat-display" ref={chatRef}>
+      <div className='chat-display' ref={chatRef}>
         {descendingOrderMessages.map((message, index) => (
           <div
             className={`message ${
@@ -35,12 +28,12 @@ const Chat: React.FC<ChatProps> = ({ descendingOrderMessages, user }) => {
             key={index}
           >
             <div>
-              <div className="senderName">{message.fromUser}</div>
+              <div className='senderName'>{message.fromUser}</div>
             </div>
-            <div className="content">
+            <div className='content'>
               <p>{message.message}</p>
             </div>
-            <div className="time">
+            <div className='time'>
               <p>{moment(message.time).calendar()}</p>
             </div>
           </div>

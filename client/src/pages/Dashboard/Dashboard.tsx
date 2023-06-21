@@ -1,26 +1,14 @@
 import TinderCard from "react-tinder-card";
 import React, { useEffect, useState } from "react";
 import ChatContainer from "../../components/ChatContainer/ChatContainer";
-
 import { useCookies } from "react-cookie";
 import "./dashboard.css";
 import UserService from "../../Services/UserService";
-
-interface User {
-  _id: string;
-  ownerName: string;
-  dogName: string;
-  matches: User[];
-  about: string;
-  dogAge: number;
-  ownerAge: number;
-  gender: string;
-  avatar: string;
-}
+import { UserInterface } from "../../interfaces";
 
 const Dashboard: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [users, setUsers] = useState<User[]>([]);
+  const [user, setUser] = useState<UserInterface | null>(null);
+  const [users, setUsers] = useState<UserInterface[]>([]);
   const [cookies, setCookie, removeCookie] = useCookies([
     "AuthToken",
     "UserId",

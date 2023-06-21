@@ -3,17 +3,10 @@ import ChatDisplay from "../ChatDisplay/ChatDisplay";
 import MatchesDisplay from "../MatchesDisplay/MatchesDisplay";
 import ChatHeader from "../ChatHeader/ChatHeader";
 import "./chat-container.css";
-
-interface User {
-  _id: string;
-  ownerName: string;
-  dogName: string;
-  matches: User[];
-  avatar: string;
-}
+import { UserInterface } from "../../interfaces";
 
 interface ChatContainerProps {
-  currentUser: User;
+  currentUser: UserInterface;
   userId: string;
 }
 
@@ -21,9 +14,9 @@ const ChatContainer: React.FC<ChatContainerProps> = ({
   currentUser,
   userId,
 }) => {
-  const [clickedUser, setClickedUser] = useState<User | null>(null);
+  const [clickedUser, setClickedUser] = useState<UserInterface | null>(null);
 
-  const handleSetClickedUser = (user: User) => {
+  const handleSetClickedUser = (user: UserInterface) => {
     setClickedUser(user);
   };
 
