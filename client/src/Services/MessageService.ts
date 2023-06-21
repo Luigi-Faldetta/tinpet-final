@@ -1,6 +1,6 @@
 import axios from "axios";
 import { io } from "socket.io-client";
-const URL = "http://localhost:3333";
+const URL = "http://localhost:3000";
 
 export const socket = io(URL);
 // const socket = io(URL);

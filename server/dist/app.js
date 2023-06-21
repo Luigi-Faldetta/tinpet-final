@@ -7,7 +7,6 @@ exports.io = exports.server = exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const http_1 = require("http");
-const socket_io_1 = require("socket.io");
 const router_1 = require("./router");
 const app = (0, express_1.default)();
 exports.app = app;
@@ -18,7 +17,7 @@ app.use(express_1.default.json());
 app.use("/", router_1.router);
 const server = (0, http_1.createServer)(app);
 exports.server = server;
-const io = new socket_io_1.Server(3333, {
+const io = require("socket.io")(server, {
     cors: {
         origin: "*",
     },
@@ -26,8 +25,9 @@ const io = new socket_io_1.Server(3333, {
 exports.io = io;
 io.on("connection", (socket) => {
     console.log("A user connected");
-    socket.on("newMessage", ({ userId, message }) => {
-        io.emit("newMessage", `${userId} said ${message}`);
+    socket.on("newMessage", ({ userId, message, }) => {
+        console.log("new Message from ", `${userId} said ${message}`);
+        io.emit("newMessage", `${userId} said ${message.message}`);
     });
     socket.on("disconnect", () => {
         console.log("A user disconnected");

@@ -1,14 +1,22 @@
 import request from "supertest";
-import { app } from "./app";
+import { io, app } from "./app";
 import mongoose from "mongoose";
 import { User } from "./model/users";
 import { MessagesTin } from "./model/msg";
+import { Server } from "socket.io";
 const databaseTest = "Newtest";
 const mongoURI = `mongodb://localhost:27017/${databaseTest}`;
+const testServerPort = 4444;
 
 describe("Users tests", () => {
   beforeAll(async () => {
     try {
+      // io.close();
+      // io.attach(testServerPort, {
+      //   cors: {
+      //     origin: "*",
+      //   },
+      // });
       await mongoose.connection.close();
       await mongoose.connect(mongoURI);
     } catch (error) {
@@ -19,6 +27,7 @@ describe("Users tests", () => {
   afterAll(async () => {
     await User.deleteMany();
     await mongoose.connection.close();
+    io.close();
   });
 
   it("should create a new user", async () => {
@@ -161,6 +170,12 @@ describe("Messages test", () => {
   let user2: any;
   beforeAll(async () => {
     try {
+      // io.close();
+      // io.attach(testServerPort, {
+      //   cors: {
+      //     origin: "*",
+      //   },
+      // });
       await mongoose.connection.close();
       await mongoose.connect(mongoURI);
       user1 = await User.create({
@@ -191,7 +206,6 @@ describe("Messages test", () => {
     const response = await request(app).post("/message").send(newMessage);
 
     expect(response.status).toBe(201);
-    console.log(response.body.data);
     expect(response.body.data.message).toBe(newMessage.message);
 
     const insertedMessage = await MessagesTin.findOne(newMessage);
@@ -213,7 +227,6 @@ describe("Messages test", () => {
       fromUser: user1._id,
       toUser: user2._id,
     });
-    console.log(response.body.data);
     expect(response.status).toBe(201);
     expect(response.body.data.length).toBeGreaterThan(0);
     expect(response.body).toEqual({

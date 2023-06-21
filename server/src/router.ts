@@ -1,5 +1,4 @@
 import express from "express";
-import { io } from "./app";
 export const router = express.Router();
 import {
   postUser,
@@ -19,7 +18,6 @@ router.put("/addmatch", updateMatch);
 router.put("/updateUser", updateUser);
 router.get("/users", getAllUsers);
 router.get("/matchedusers", getMatchedUsers);
-// router.get("/matchedusers", getMatchedUsers);
 router.get("/messages", getMsg);
 router.post("/message", postMsg);
 

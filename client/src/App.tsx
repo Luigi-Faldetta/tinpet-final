@@ -21,8 +21,8 @@ const App: React.FC = () => {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
-          {authToken && <Route path='/dashboard' element={<Dashboard />} />}
-          {authToken && <Route path='/onboarding' element={<Onboarding />} />}
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/onboarding' element={<Onboarding />} />
         </Routes>
       </BrowserRouter>
     </>
