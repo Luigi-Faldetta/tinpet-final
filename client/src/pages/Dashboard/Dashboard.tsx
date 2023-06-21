@@ -5,6 +5,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import "./dashboard.css";
 import UserService from "../../Services/UserService";
+import zIndex from "@mui/material/styles/zIndex";
 
 interface User {
   _id: string;
@@ -17,11 +18,6 @@ interface User {
   gender: string;
   avatar: string;
 }
-declare global {
-  interface Window {
-    my_modal_5: HTMLDialogElement;
-  }
-}
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -31,10 +27,8 @@ const Dashboard: React.FC = () => {
     "UserId",
   ]);
   const [lastDirection, setLastDirection] = useState<string | null>(null);
-  // console.log(cookies, "coo");
 
   const userId: string = cookies.UserId;
-  // console.log(userId, "UUUU");
 
   const getUser = async () => {
     try {
@@ -103,10 +97,45 @@ const Dashboard: React.FC = () => {
                 >
                   <div
                     style={{ backgroundImage: "url(" + user.avatar + ")" }}
-                    className='card'
+                    className='card z-10'
                   >
-                    {" "}
-                    info: {(user.ownerAge, user.ownerName)}
+                    {/* {" "}
+                info: {(user.ownerAge, user.ownerName)} */}
+                    <label
+                      htmlFor={`my_modal_${user._id}`}
+                      className='btn px-2 py-1 rounded-3xl text-sm'
+                      style={{
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        color: "#ffffff",
+                        margin: "10px",
+                      }}
+                    >
+                      Info about {user.ownerName} and {user.dogName}
+                    </label>
+
+                    {/* Put this part before </body> tag */}
+                    <input
+                      type='checkbox'
+                      id={`my_modal_${user._id}`}
+                      className='modal-toggle'
+                    />
+                    <div className='modal z-20 rounded-3xl'>
+                      <div className='modal-box bg-white rounded'>
+                        <div className='modalInfo'>
+                          <h3 className='text-lg font-bold'>Info about us:</h3>
+                          <p className='py-4'>my age: {user.ownerAge}</p>
+                          <p className='py-4'>my dog age: {user.dogAge}</p>
+                          <p className='py-4'>my dog gender: {user.gender}</p>
+                          <p className='py-4'>info about us: {user.about}</p>
+                        </div>
+                      </div>
+                      <label
+                        className='modal-backdrop'
+                        htmlFor={`my_modal_${user._id}`}
+                      >
+                        Close
+                      </label>
+                    </div>
                   </div>
                 </TinderCard>
               ))}
