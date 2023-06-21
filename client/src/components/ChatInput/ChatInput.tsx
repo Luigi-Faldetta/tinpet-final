@@ -77,14 +77,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
   // useEffect(() => {
   // }, []);
   return (
-    <div className='chat-input'>
+    <div className="chat-input">
       <textarea
         value={textArea}
         onChange={(e) => setTextArea(e.target.value)}
         onKeyDown={handleKeyDown}
       ></textarea>
       <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl mt-5'
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl mt-5"
         onClick={addMessage}
       >
         Submit

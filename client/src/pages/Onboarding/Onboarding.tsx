@@ -1,11 +1,10 @@
-//@ts-nocheck
 import Nav from "../../components/Nav/Nav";
 import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./onboarding.css";
-import { Cloudinary } from "@cloudinary/base";
+import { Cloudinary } from "@cloudinary/url-gen";
 import UserService from "../../Services/UserService";
 
 interface FormData {
@@ -23,7 +22,7 @@ interface FormData {
 const Onboarding: React.FC = () => {
   const navigate = useNavigate();
   const [cloudinaryScriptLoaded, setCloudinaryScriptLoaded] = useState(false);
-  const [cloudinary, setCloudinary] = useState<Cloudinary | null>(null);
+  const [cloudinary, setCloudinary] = useState<Cloudinary>();
   // const [cookies, setCookie] = useCookies(["user"]);
   const [cookies, setCookie] = useCookies();
   // console.log(cookies);
@@ -41,12 +40,12 @@ const Onboarding: React.FC = () => {
   });
 
   const openCloudinaryWidget = () => {
-    if (!cloudinary || !cloudinary.createUploadWidget) {
+    if (!cloudinary) {
       console.error("Cloudinary is not available");
       return;
     }
 
-    const widget = cloudinary.createUploadWidget(
+    const widget = (window as any).cloudinary.createUploadWidget(
       {
         cloudName: "doqmqgbym",
         uploadPreset: "mfrvfjgq",
@@ -81,7 +80,7 @@ const Onboarding: React.FC = () => {
 
   useEffect(() => {
     if (cloudinaryScriptLoaded) {
-      setCloudinary(window.cloudinary);
+      setCloudinary((window as any).cloudinary);
     }
   }, [cloudinaryScriptLoaded]);
 
@@ -128,6 +127,15 @@ const Onboarding: React.FC = () => {
     }
   };
 
+  const handleButtonClick = () => {
+    openCloudinaryWidget();
+    handleChange({
+      target: {
+        name: "avatar",
+      },
+    } as ChangeEvent<HTMLInputElement>);
+  };
+
   return (
     <>
       <Nav
@@ -136,103 +144,103 @@ const Onboarding: React.FC = () => {
         setIsSignUp={() => {}}
         authToken={false}
       />
-      <div className='onboarding'>
+      <div className="onboarding">
         <h2>CREATE ACCOUNT</h2>
 
-        <form encType='multipart/form-data' onSubmit={handleSubmit}>
+        <form encType="multipart/form-data" onSubmit={handleSubmit}>
           <section>
-            <label htmlFor='first_name'>Your name</label>
+            <label htmlFor="first_name">Your name</label>
             <input
-              type='text'
-              name='ownerName'
-              id='yourname'
-              placeholder='Your name'
+              type="text"
+              name="ownerName"
+              id="yourname"
+              placeholder="Your name"
               required={true}
               value={formData.ownerName}
               onChange={handleChange}
             />
-            <label>your age</label>
+            <label htmlFor="yourage">Your age</label>
             <input
-              type='number'
-              name='ownerAge'
-              id='yourage'
-              placeholder='Your age'
+              type="number"
+              name="ownerAge"
+              id="yourage"
+              placeholder="Your age"
               required={true}
               value={formData.ownerAge}
               onChange={handleChange}
             />
-            <label htmlFor='first_name'>Your dog's name</label>
+            <label htmlFor="dogname">Your dog's name</label>
             <input
-              type='text'
-              name='dogName'
-              id='dogname'
+              type="text"
+              name="dogName"
+              id="dogname"
               placeholder="Your dog's name"
               required={true}
               value={formData.dogName}
               onChange={handleChange}
             />
-            <label>Your dog's age</label>
+            <label htmlFor="dogage">Your dog's age</label>
             <input
-              type='number'
-              name='dogAge'
-              id='dogage'
+              type="number"
+              name="dogAge"
+              id="dogage"
               placeholder="Your dog's age"
               required={true}
               value={formData.dogAge}
               onChange={handleChange}
             />
             <label>Gender</label>
-            <div className='multiple-input-container'>
+            <div className="multiple-input-container">
               <input
-                id='male-gender'
-                type='radio'
-                name='gender'
-                placeholder='Gender'
-                value='male'
+                id="male-gender"
+                type="radio"
+                name="gender"
+                placeholder="Gender"
+                value="male"
                 checked={formData.gender === "male"}
                 onChange={handleChange}
               />
-              <label htmlFor='male-gender'>Male</label>
+              <label htmlFor="male-gender">Male</label>
               <input
-                id='female-gender'
-                type='radio'
-                name='gender'
-                placeholder='Gender'
-                value='female'
+                id="female-gender"
+                type="radio"
+                name="gender"
+                placeholder="Gender"
+                value="female"
                 checked={formData.gender === "female"}
                 onChange={handleChange}
               />
-              <label htmlFor='female-gender'>Female</label>
+              <label htmlFor="female-gender">Female</label>
             </div>
 
-            <label htmlFor='about'>About me and my dog</label>
+            <label htmlFor="about">About me and my dog</label>
             <input
-              id='about'
-              type='text'
-              name='about'
+              id="about"
+              type="text"
+              name="about"
               required={true}
-              placeholder='We are a great bunch'
+              placeholder="We are a great bunch"
               value={formData.about}
               onChange={handleChange}
             />
-            <input type='submit' value='Submit' />
+            <input type="submit" value="Submit" />
           </section>
 
           <section>
-            <label htmlFor='about'>Profile Picture</label>
+            <label htmlFor="about">Profile Picture</label>
             <input
-              id='avatar'
-              type='url'
-              name='avatar'
+              id="avatar"
+              type="url"
+              name="avatar"
               // required={true}
               onChange={handleChange}
             />
-            <button type='button' onClick={handleChange} name='avatar'>
+            <button type="button" onClick={handleButtonClick} name="avatar">
               Select Profile Picture
             </button>
-            <div className='photo-container'>
+            <div className="photo-container">
               {formData.avatar && (
-                <img src={formData.avatar} alt='profile picture' />
+                <img src={formData.avatar} alt="profile picture" />
               )}
             </div>
           </section>

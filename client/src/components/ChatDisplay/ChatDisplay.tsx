@@ -42,9 +42,6 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
     try {
       const response = await MessageService.getMsg(userId, clickedUserId);
       setUsersMessages(response.data);
-      // const response = await axios.get("http://localhost:3000/messages", {
-      //   params: { userId: userId, correspondingUserId: clickedUserId },
-      // });
     } catch (error) {
       console.log(error);
     }
@@ -58,14 +55,9 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
       console.log(error);
     }
   };
-  // console.log(clickedUserId, "here");
   useEffect(() => {
     getUsersMessages();
     getClickedUsersMessages();
-    // socket.on("newMessage", () => {
-    //   getUsersMessages();
-    //   getClickedUsersMessages();
-    // });
     return () => {
       // socket.off("newMessage");
     };
@@ -113,7 +105,7 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
 
   return (
     <div>
-      <div className='msg'>
+      <div className="msg">
         <Chat
           descendingOrderMessages={descendingOrderMessages}
           user={user}
