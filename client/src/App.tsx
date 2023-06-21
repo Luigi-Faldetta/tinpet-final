@@ -14,8 +14,6 @@ interface CookiesType {
 const App: React.FC = () => {
   const [cookies] = useCookies<string>(["user"]);
 
-  // const authToken: string | undefined = cookies.AuthToken;
-
   return (
     <>
       <BrowserRouter>

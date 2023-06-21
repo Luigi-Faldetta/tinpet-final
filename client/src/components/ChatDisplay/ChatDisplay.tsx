@@ -1,10 +1,7 @@
 import Chat from "../Chat/Chat";
 import ChatInput from "../ChatInput/ChatInput";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
 import "./chat-display.css";
-// const socket = io("http://localhost:3000");
 import MessageService from "../../Services/MessageService";
 
 export interface User {
@@ -31,7 +28,6 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
   clickedUser,
   userId,
 }) => {
-  // const userId = user?._id;
   const clickedUserId = clickedUser?._id;
   const [usersMessages, setUsersMessages] = useState<Message[]>([]);
   const [clickedUsersMessages, setClickedUsersMessages] = useState<Message[]>(
@@ -58,16 +54,10 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
   useEffect(() => {
     getUsersMessages();
     getClickedUsersMessages();
-    return () => {
-      // socket.off("newMessage");
-    };
+    return () => {};
   }, []);
 
   const messages: {
-    // ownerName: string;
-    // img: string;
-    // message: string;
-    // timestamp: string;
     fromUser: string;
     message: string;
     time: string;
@@ -76,10 +66,6 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
 
   usersMessages?.forEach((message) => {
     const formattedMessage = {
-      // ownerName: user?.ownerName || "",
-      // img: user?.avatar || "",
-      // message: message.message,
-      // timestamp: message.time,
       fromUser: user.ownerName,
       message: message.message,
       time: message.time,
@@ -91,7 +77,6 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
   clickedUsersMessages?.forEach((message) => {
     const formattedMessage = {
       fromUser: clickedUser?.ownerName || "",
-      // img: clickedUser?.avatar || "",
       message: message.message,
       time: message.time,
       toUser: user.ownerName || "",
