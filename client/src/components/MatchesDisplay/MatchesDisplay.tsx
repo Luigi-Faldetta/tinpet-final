@@ -34,7 +34,6 @@ const MatchesDisplay: React.FC<MatchesDisplayProps> = ({
   useEffect(() => {
     getMatches();
   }, [matches]);
-
   return (
     <div className="matches-display">
       {matchedProfiles?.map((match) => (

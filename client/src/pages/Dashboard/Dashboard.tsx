@@ -1,11 +1,10 @@
 import TinderCard from "react-tinder-card";
 import React, { useEffect, useState } from "react";
 import ChatContainer from "../../components/ChatContainer/ChatContainer";
-import axios from "axios";
+
 import { useCookies } from "react-cookie";
 import "./dashboard.css";
 import UserService from "../../Services/UserService";
-import zIndex from "@mui/material/styles/zIndex";
 
 interface User {
   _id: string;
@@ -32,8 +31,6 @@ const Dashboard: React.FC = () => {
 
   const getUser = async () => {
     try {
-      // const response = await axios
-      //   .get(`http://localhost:3000/user/${userId}`)
       const response = await UserService.getUser(userId).then((response) => {
         setUser(response.data);
       });
@@ -41,8 +38,6 @@ const Dashboard: React.FC = () => {
       console.log(error);
     }
   };
-
-  //test
 
   const getAllUsers = async () => {
     try {
@@ -63,13 +58,16 @@ const Dashboard: React.FC = () => {
     }
   }, [user]);
 
-  // const updateMatches = UserService.updateMatch("userId", "matchedUserId");
-
   const swiped = (direction: string, userId: string, swipedId: string) => {
     setLastDirection(direction);
+
     if (direction === "right") {
-      // updateMatches(userId, swipedId);
-      UserService.updateMatch(userId, swipedId);
+      if (
+        user?.matches &&
+        !user.matches.some((match) => match._id === swipedId)
+      ) {
+        UserService.updateMatch(userId, swipedId);
+      }
     }
   };
 
@@ -78,8 +76,10 @@ const Dashboard: React.FC = () => {
   };
 
   const filteredUsers = users.filter((user) => {
-    // console.log(user);
-    return user._id !== userId;
+    return (
+      user._id !== userId &&
+      (!user.matches || !user.matches.some((match) => match._id === match._id))
+    );
   });
   return (
     <>
@@ -104,8 +104,6 @@ const Dashboard: React.FC = () => {
                     style={{ backgroundImage: "url(" + user.avatar + ")" }}
                     className="card z-10"
                   >
-                    {/* {" "}
-                info: {(user.ownerAge, user.ownerName)} */}
                     <label
                       htmlFor={`my_modal_${user._id}`}
                       className="btn px-2 py-1 rounded-3xl text-sm"
