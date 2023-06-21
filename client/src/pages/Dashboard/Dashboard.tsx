@@ -84,29 +84,29 @@ const Dashboard: React.FC = () => {
   return (
     <>
       {user && (
-        <div className="dashboard">
+        <div className='dashboard'>
           <ChatContainer
             currentUser={user}
             userId={userId}
-            data-testid="chat-container"
+            data-testid='chat-container'
           />
-          <div className="swiper-container">
-            <div className="card-container">
+          <div className='swiper-container'>
+            <div className='card-container'>
               {filteredUsers.map((user) => (
                 <TinderCard
-                  data-testid="tinder-card"
-                  className="swipe"
+                  data-testid='tinder-card'
+                  className='swipe'
                   key={user._id}
                   onSwipe={(dir) => swiped(dir, userId, user._id)}
                   onCardLeftScreen={() => outOfFrame(user.ownerName)}
                 >
                   <div
                     style={{ backgroundImage: "url(" + user.avatar + ")" }}
-                    className="card z-10"
+                    className='card z-10'
                   >
                     <label
                       htmlFor={`my_modal_${user._id}`}
-                      className="btn px-2 py-1 rounded-3xl text-sm"
+                      className='btn px-2 py-1 rounded-3xl text-sm'
                       style={{
                         backgroundColor: "rgba(0, 0, 0, 0.5)",
                         color: "#ffffff",
@@ -118,22 +118,22 @@ const Dashboard: React.FC = () => {
 
                     {/* Put this part before </body> tag */}
                     <input
-                      type="checkbox"
+                      type='checkbox'
                       id={`my_modal_${user._id}`}
-                      className="modal-toggle"
+                      className='modal-toggle'
                     />
-                    <div className="modal z-20 rounded-3xl">
-                      <div className="modal-box bg-white rounded">
-                        <div className="modalInfo">
-                          <h3 className="text-lg font-bold">Info about us:</h3>
-                          <p className="py-4">my age: {user.ownerAge}</p>
-                          <p className="py-4">my dog age: {user.dogAge}</p>
-                          <p className="py-4">my dog gender: {user.gender}</p>
-                          <p className="py-4">info about us: {user.about}</p>
+                    <div className='modal z-20 rounded-3xl'>
+                      <div className='modal-box bg-white rounded'>
+                        <div className='modalInfo'>
+                          <h3 className='text-lg font-bold'>Info about us:</h3>
+                          <p className='py-4'>my age: {user.ownerAge}</p>
+                          <p className='py-4'>my dog age: {user.dogAge}</p>
+                          <p className='py-4'>my dog gender: {user.gender}</p>
+                          <p className='py-4'>info about us: {user.about}</p>
                         </div>
                       </div>
                       <label
-                        className="modal-backdrop"
+                        className='modal-backdrop'
                         htmlFor={`my_modal_${user._id}`}
                       >
                         Close
