@@ -93,9 +93,6 @@ const Onboarding: React.FC = () => {
 
       formData.dogAge = Number(formData.dogAge);
       formData.ownerAge = Number(formData.ownerAge);
-      console.log(formData);
-      console.log(typeof formData.dogAge);
-      console.log(typeof formData.ownerAge);
       // const response = await axios
       //   .put("http://localhost:3000/updateUser", { ...restData, avatar })
       const response = await UserService.updateUser(
