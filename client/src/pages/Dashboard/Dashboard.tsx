@@ -77,8 +77,9 @@ const Dashboard: React.FC = () => {
 
   const filteredUsers = users.filter((user) => {
     return (
-      user._id !== userId &&
-      (!user.matches || !user.matches.some((match) => match._id === match._id))
+      user._id !== userId
+      // &&
+      // (!user.matches || !user.matches.some((match) => match._id === match._id))
     );
   });
   return (

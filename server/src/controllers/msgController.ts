@@ -4,7 +4,6 @@ import { MessagesTin } from "../model/msg";
 export const getMsg = async (req: Request, res: Response) => {
   try {
     const { userId, correspondingUserId } = req.query;
-
     const query = { fromUser: userId, toUser: correspondingUserId };
     const foundMessages = await MessagesTin.find(query);
     res.status(201).json({ message: "ok", data: foundMessages });
