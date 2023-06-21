@@ -58,7 +58,11 @@ const Dashboard: React.FC = () => {
     }
   }, [user]);
 
-  const swiped = (direction: string, userId: string, swipedId: string) => {
+  const swiped = async (
+    direction: string,
+    userId: string,
+    swipedId: string
+  ) => {
     setLastDirection(direction);
 
     if (direction === "right") {
@@ -66,7 +70,8 @@ const Dashboard: React.FC = () => {
         user?.matches &&
         !user.matches.some((match) => match._id === swipedId)
       ) {
-        UserService.updateMatch(userId, swipedId);
+        await UserService.updateMatch(userId, swipedId);
+        getUser();
       }
     }
   };
@@ -75,11 +80,10 @@ const Dashboard: React.FC = () => {
     console.log(ownerName + " left the screen!");
   };
 
-  const filteredUsers = users.filter((user) => {
+  const filteredUsers = users.filter((potentialMatch) => {
     return (
-      user._id !== userId
-      // &&
-      // (!user.matches || !user.matches.some((match) => match._id === match._id))
+      potentialMatch._id !== userId &&
+      !user?.matches.some((match) => match._id === potentialMatch._id)
     );
   });
   return (
