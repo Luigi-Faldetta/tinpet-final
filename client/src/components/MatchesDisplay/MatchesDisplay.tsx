@@ -7,6 +7,8 @@ interface User {
   _id: string;
   ownerName: string;
   avatar: string;
+  dogName: string;
+  matches: User[];
 }
 
 interface MatchesDisplayProps {

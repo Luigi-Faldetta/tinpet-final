@@ -19,9 +19,16 @@ const users_1 = require("./model/users");
 const msg_1 = require("./model/msg");
 const databaseTest = "Newtest";
 const mongoURI = `mongodb://localhost:27017/${databaseTest}`;
+const testServerPort = 4444;
 describe("Users tests", () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            // io.close();
+            // io.attach(testServerPort, {
+            //   cors: {
+            //     origin: "*",
+            //   },
+            // });
             yield mongoose_1.default.connection.close();
             yield mongoose_1.default.connect(mongoURI);
         }
@@ -32,6 +39,7 @@ describe("Users tests", () => {
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield users_1.User.deleteMany();
         yield mongoose_1.default.connection.close();
+        app_1.io.close();
     }));
     it("should create a new user", () => __awaiter(void 0, void 0, void 0, function* () {
         const data = { email: "test@test.com", password: "password123" };
@@ -154,6 +162,12 @@ describe("Messages test", () => {
     let user2;
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            // io.close();
+            // io.attach(testServerPort, {
+            //   cors: {
+            //     origin: "*",
+            //   },
+            // });
             yield mongoose_1.default.connection.close();
             yield mongoose_1.default.connect(mongoURI);
             user1 = yield users_1.User.create({
@@ -182,7 +196,6 @@ describe("Messages test", () => {
         };
         const response = yield (0, supertest_1.default)(app_1.app).post("/message").send(newMessage);
         expect(response.status).toBe(201);
-        console.log(response.body.data);
         expect(response.body.data.message).toBe(newMessage.message);
         const insertedMessage = yield msg_1.MessagesTin.findOne(newMessage);
         expect(insertedMessage).toBeDefined();
@@ -202,7 +215,6 @@ describe("Messages test", () => {
             fromUser: user1._id,
             toUser: user2._id,
         });
-        console.log(response.body.data);
         expect(response.status).toBe(201);
         expect(response.body.data.length).toBeGreaterThan(0);
         expect(response.body).toEqual({

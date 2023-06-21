@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./onboarding.css";
 import { Cloudinary } from "@cloudinary/base";
+import UserService from "../../Services/UserService";
 
 interface FormData {
   _id?: string;
