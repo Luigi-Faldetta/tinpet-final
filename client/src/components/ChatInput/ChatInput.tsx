@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+
 import "./chat-input.css";
 import MessageService, { socket } from "../../Services/MessageService";
-import io from "socket.io-client";
-import { Message } from "../ChatDisplay/ChatDisplay";
 
-// const socket = io("http://localhost:3000");
+import { Message } from "../ChatDisplay/ChatDisplay";
 
 interface User {
   _id: string;
@@ -54,8 +52,6 @@ const ChatInput: React.FC<ChatInputProps> = ({
         clickedUserId
       );
 
-      // getUserMessages();
-      // getClickedUsersMessages();
       const updatedUserMessages = [...usersMessages, message];
       setUsersMessages(updatedUserMessages);
       socket.emit("newMessage", { userId: userId, message });
@@ -74,8 +70,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
     getUserMessages();
     getClickedUsersMessages();
   });
-  // useEffect(() => {
-  // }, []);
+
   return (
     <div className="chat-input">
       <textarea

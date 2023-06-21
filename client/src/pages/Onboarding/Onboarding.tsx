@@ -1,7 +1,6 @@
 import Nav from "../../components/Nav/Nav";
 import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./onboarding.css";
 import { Cloudinary } from "@cloudinary/url-gen";
@@ -23,11 +22,8 @@ const Onboarding: React.FC = () => {
   const navigate = useNavigate();
   const [cloudinaryScriptLoaded, setCloudinaryScriptLoaded] = useState(false);
   const [cloudinary, setCloudinary] = useState<Cloudinary>();
-  // const [cookies, setCookie] = useCookies(["user"]);
   const [cookies, setCookie] = useCookies();
-  // console.log(cookies);
   const [formData, setFormData] = useState<FormData>({
-    // user_id: cookies.user?.UserId,
     _id: cookies.UserId,
     ownerName: "",
     dogName: "",
@@ -49,7 +45,6 @@ const Onboarding: React.FC = () => {
       {
         cloudName: "doqmqgbym",
         uploadPreset: "mfrvfjgq",
-        // folder: "home/avatars",
       },
       (error: string, result: any) => {
         if (!error && result && result.event === "success") {
@@ -92,16 +87,12 @@ const Onboarding: React.FC = () => {
 
       formData.dogAge = Number(formData.dogAge);
       formData.ownerAge = Number(formData.ownerAge);
-      // const response = await axios
-      //   .put("http://localhost:3000/updateUser", { ...restData, avatar })
       const response = await UserService.updateUser(
         restData,
         avatar,
         cookies.UserId
       ).then((response) => {
-        // console.log(formData);
         setCookie("_id", cookies.UserId);
-        // console.log(cookies);
         const success = response.status === 200;
         if (success) {
           navigate("/dashboard");
@@ -189,7 +180,7 @@ const Onboarding: React.FC = () => {
               value={formData.dogAge}
               onChange={handleChange}
             />
-            <label>Gender</label>
+            <label>Your dog's gender</label>
             <div className="multiple-input-container">
               <input
                 id="male-gender"
@@ -213,13 +204,13 @@ const Onboarding: React.FC = () => {
               <label htmlFor="female-gender">Female</label>
             </div>
 
-            <label htmlFor="about">About me and my dog</label>
+            <label htmlFor="about">Something about you and your dog</label>
             <input
               id="about"
               type="text"
               name="about"
               required={true}
-              placeholder="We are a great bunch"
+              placeholder="Tell us here..."
               value={formData.about}
               onChange={handleChange}
             />

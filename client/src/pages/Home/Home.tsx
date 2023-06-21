@@ -10,7 +10,6 @@ const Home: React.FC = () => {
   const authToken: boolean = false;
 
   const handleClick = () => {
-    // console.log("Click!!");
     setShowModal(true);
     setIsSignUp(true);
   };

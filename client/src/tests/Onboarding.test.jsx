@@ -1,8 +1,7 @@
-import { afterEach, describe, it, expect, vi } from "vitest";
+import { afterEach, describe, expect } from "vitest";
 import { Route, Routes, BrowserRouter, MemoryRouter } from "react-router-dom";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import Onboarding from "../pages/Onboarding/Onboarding";
-import Dashboard from "../pages/Dashboard/Dashboard";
 
 afterEach(() => {
   render(null);
@@ -21,11 +20,12 @@ describe("Onboarding page", () => {
     expect(screen.getByText("Your age")).toBeInTheDocument();
     expect(screen.getByText("Your dog's name")).toBeInTheDocument();
     expect(screen.getByText("Your dog's age")).toBeInTheDocument();
-    expect(screen.getByText("Gender")).toBeInTheDocument();
+    expect(screen.getByText("Your dog's gender")).toBeInTheDocument();
     expect(screen.getByText("Male")).toBeInTheDocument();
     expect(screen.getByText("Female")).toBeInTheDocument();
-    expect(screen.getByText("About me and my dog")).toBeInTheDocument();
-    expect(screen.getByText("About me and my dog")).toBeInTheDocument();
+    expect(
+      screen.getByText("Something about you and your dog")
+    ).toBeInTheDocument();
     expect(screen.getByText("Profile Picture")).toBeInTheDocument();
     expect(screen.getByText("Submit")).toBeInTheDocument();
   });

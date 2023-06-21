@@ -1,7 +1,4 @@
 import axios from "axios";
-import io from "socket.io-client";
-
-// const socket = io("http://localhost:3000");
 
 const UserService = {
   getUsers: () => {
@@ -52,7 +49,6 @@ const UserService = {
         userId,
         matchedUserId,
       });
-      // socket.emit("matchUpdated", { userId });
     } catch (error) {
       console.log(error);
     }
