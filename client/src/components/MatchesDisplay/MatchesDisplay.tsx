@@ -36,15 +36,15 @@ const MatchesDisplay: React.FC<MatchesDisplayProps> = ({
   }, [matches]);
 
   return (
-    <div className='matches-display'>
+    <div className="matches-display">
       {matchedProfiles?.map((match) => (
         <div
           key={match._id}
-          className='match-card'
+          className="match-card"
           onClick={() => setClickedUser(match)}
         >
-          <div className='img-container'>
-            <img src={match?.avatar} alt='matched photo' />
+          <div className="img-container">
+            <img src={match?.avatar} alt="matched photo" />
           </div>
           <h3>{match?.ownerName}</h3>
         </div>
