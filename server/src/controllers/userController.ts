@@ -39,7 +39,6 @@ export const postUser = async (req: Request, res: Response) => {
     };
 
     const newUser = await User.create(data);
-    // console.log(newUser);
 
     const token = jwt.sign(data, sanitizedEmail, {
       expiresIn: 60 * 24,
@@ -171,7 +170,6 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const getMatchedUsers = async (req: Request, res: Response) => {
   const userIds = req.query.userIds;
-  console.log(req);
   if (typeof userIds === "string") {
     try {
       const parsedUserIds = JSON.parse(userIds);

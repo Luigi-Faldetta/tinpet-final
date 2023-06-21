@@ -30,7 +30,6 @@ const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             password: hashedPassword,
         };
         const newUser = yield users_1.User.create(data);
-        // console.log(newUser);
         const token = jsonwebtoken_1.default.sign(data, sanitizedEmail, {
             expiresIn: 60 * 24,
         });
@@ -162,7 +161,6 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updateUser = updateUser;
 const getMatchedUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userIds = req.query.userIds;
-    console.log(req);
     if (typeof userIds === "string") {
         try {
             const parsedUserIds = JSON.parse(userIds);

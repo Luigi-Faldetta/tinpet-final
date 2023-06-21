@@ -6,7 +6,6 @@ export const getMsg = async (req: Request, res: Response) => {
     const { userId, correspondingUserId } = req.query;
 
     const query = { fromUser: userId, toUser: correspondingUserId };
-
     const foundMessages = await MessagesTin.find(query);
     res.status(201).json({ message: "ok", data: foundMessages });
   } catch (error: any) {

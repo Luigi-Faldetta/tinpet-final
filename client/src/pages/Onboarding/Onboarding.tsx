@@ -156,7 +156,7 @@ const Onboarding: React.FC = () => {
             <input
               type="text"
               name="ownerName"
-              id="first_name"
+              id="yourname"
               placeholder="Your name"
               required={true}
               value={formData.ownerName}
