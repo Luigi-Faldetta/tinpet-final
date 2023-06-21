@@ -1,19 +1,11 @@
 import React, { useState } from "react";
-
 import "./chat-input.css";
 import MessageService, { socket } from "../../Services/MessageService";
-
-import { Message } from "../ChatDisplay/ChatDisplay";
-
-interface User {
-  _id: string;
-  avatar: string;
-  ownerName: string;
-}
+import { Message, UserInterface } from "../../interfaces";
 
 interface ChatInputProps {
-  user: User;
-  clickedUser: User;
+  user: UserInterface;
+  clickedUser: UserInterface;
   getUserMessages: () => void;
   getClickedUsersMessages: () => void;
   setUsersMessages: React.Dispatch<React.SetStateAction<Message[]>>;
@@ -72,14 +64,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
   });
 
   return (
-    <div className="chat-input">
+    <div className='chat-input'>
       <textarea
         value={textArea}
         onChange={(e) => setTextArea(e.target.value)}
         onKeyDown={handleKeyDown}
       ></textarea>
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl mt-5"
+        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl mt-5'
         onClick={addMessage}
       >
         Submit

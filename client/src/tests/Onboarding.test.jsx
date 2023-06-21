@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
 import { afterEach, describe, expect } from "vitest";
-import { Route, Routes, BrowserRouter, MemoryRouter } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
 import Onboarding from "../pages/Onboarding/Onboarding";
 

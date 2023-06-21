@@ -2,25 +2,20 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./matches-display.css";
 import UserService from "../../Services/UserService";
-
-interface User {
-  _id: string;
-  ownerName: string;
-  avatar: string;
-  dogName: string;
-  matches: User[];
-}
+import { UserInterface } from "../../interfaces";
 
 interface MatchesDisplayProps {
-  matches: User[];
-  setClickedUser: (user: User) => void;
+  matches: UserInterface[];
+  setClickedUser: (user: UserInterface) => void;
 }
 
 const MatchesDisplay: React.FC<MatchesDisplayProps> = ({
   matches,
   setClickedUser,
 }) => {
-  const [matchedProfiles, setMatchedProfiles] = useState<User[] | null>(null);
+  const [matchedProfiles, setMatchedProfiles] = useState<
+    UserInterface[] | null
+  >(null);
 
   const getMatches = async () => {
     const matchedUserIds = matches.map(({ _id }) => _id);

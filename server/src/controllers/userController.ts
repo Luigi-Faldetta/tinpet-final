@@ -15,7 +15,6 @@ export interface UserInterface {
   gender?: string;
   avatar?: string;
   about?: string;
-  //
   matches?: any[];
 }
 

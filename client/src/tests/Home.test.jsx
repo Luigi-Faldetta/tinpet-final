@@ -1,7 +1,8 @@
+/* eslint-disable no-undef */
 import { afterEach, describe, it, expect } from "vitest";
 import App from "../App";
 import Home from "../pages/Home/Home";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 afterEach(() => {
   render(null);

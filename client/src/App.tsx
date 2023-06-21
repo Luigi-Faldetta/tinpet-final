@@ -7,10 +7,6 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Onboarding from "./pages/Onboarding/Onboarding";
 import "./index.css";
 
-interface CookiesType {
-  AuthToken?: string;
-}
-
 const App: React.FC = () => {
   const [cookies] = useCookies<string>(["user"]);
 
@@ -18,9 +14,9 @@ const App: React.FC = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/onboarding' element={<Onboarding />} />
         </Routes>
       </BrowserRouter>
     </>

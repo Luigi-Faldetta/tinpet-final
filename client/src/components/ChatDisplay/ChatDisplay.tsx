@@ -3,23 +3,11 @@ import ChatInput from "../ChatInput/ChatInput";
 import React, { useState, useEffect } from "react";
 import "./chat-display.css";
 import MessageService from "../../Services/MessageService";
-
-export interface User {
-  _id: string;
-  ownerName: string;
-  avatar: string;
-}
-
-export interface Message {
-  fromUser: string;
-  message: string;
-  time: string;
-  toUser: string;
-}
+import { Message, UserInterface } from "../../interfaces";
 
 interface ChatDisplayProps {
-  user: User;
-  clickedUser: User;
+  user: UserInterface;
+  clickedUser: UserInterface;
   userId: string;
 }
 
@@ -90,7 +78,7 @@ const ChatDisplay: React.FC<ChatDisplayProps> = ({
 
   return (
     <div>
-      <div className="msg">
+      <div className='msg'>
         <Chat
           descendingOrderMessages={descendingOrderMessages}
           user={user}
