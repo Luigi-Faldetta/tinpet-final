@@ -10,9 +10,11 @@ On opening the website you can either log in with your email and password or cre
 
 You can find a breakdown of the technologies used below:
 
-Front-end: TypeScript, Tailwind, daisyUI, React, Cloudinary.
+Front-end: TypeScript, Tailwind, daisyUI, React, Vite, Cloudinary.
 
-Back-end: 
+Back-end: Node.js, Express, Mongoose, MongoDB, JWT, bcrypt.
+
+Additionally, Socket.io was used to handle WebSockets for the chat functionality and tests were performed using Jest, Vitest and React Testing Library.
 ## Screenshots
 
 ![Main page gif](./screenshots/tinPet.gif)
