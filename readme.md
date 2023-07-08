@@ -14,7 +14,7 @@ Front-end: TypeScript, Tailwind, daisyUI, React, Vite, Cloudinary.
 
 Back-end: Node.js, Express, Mongoose, MongoDB, JWT, bcrypt.
 
-Additionally, Socket.io was used to handle WebSockets for the chat functionality and tests were performed using Jest, Vitest and React Testing Library.
+Additionally, Socket.io was used to handle WebSockets for the chat functionality and unit testing was performed using Jest, Vitest and React Testing Library.
 ## Screenshots
 
 ![Main page gif](./screenshots/tinPet.gif)
