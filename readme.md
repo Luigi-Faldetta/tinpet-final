@@ -13,3 +13,18 @@ You can find a breakdown of the technologies used below:
 Front-end: TypeScript, Tailwind, daisyUI, React, Cloudinary.
 
 Back-end: 
+## Screenshots
+
+![Main page gif](./screenshots/tinPet.gif)
+
+*Log In page*
+![Login page screenshot](./screenshots/logIn.png)
+
+*Create profile page*
+![Create profile screenshot](./screenshots/createProfile.png)
+
+*Matching Page*
+![Matching Page screenshot](./screenshots/matchingPage.png)
+
+*TinCard*
+![TinCard screenshot](./screenshots/tinCard.png)
