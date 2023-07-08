@@ -37,7 +37,6 @@ io.on("connection", (socket: Socket) => {
         message: string;
       };
     }) => {
-      console.log("new Message from ", `${userId} said ${message}`);
       io.emit("newMessage", `${userId} said ${message.message}`);
     }
   );

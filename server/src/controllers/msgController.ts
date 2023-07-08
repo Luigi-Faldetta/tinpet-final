@@ -24,7 +24,6 @@ export const postMsg = async (req: Request, res: Response) => {
       toUser: correspondingUserId,
     });
 
-    console.log("All good!");
     return res.status(201).json({ message: "ok", data: insertedMessage });
   } catch (error: any) {
     console.log("Post message failed with: ", error.message);

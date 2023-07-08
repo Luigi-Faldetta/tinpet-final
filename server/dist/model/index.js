@@ -16,7 +16,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         mongoose_1.default
-            .connect("mongodb://localhost:27017/admin")
+            .connect("mongodb+srv://annakucherenko1997:12345@cluster0.8ggleqr.mongodb.net/?retryWrites=true&w=majority")
             .then(() => console.log("connected to db 🟦"));
     });
 }
