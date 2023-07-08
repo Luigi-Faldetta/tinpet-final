@@ -36,6 +36,9 @@ Back-end: Node.js, Express, Mongoose, MongoDB, JWT, bcrypt.
 
 Additionally, Socket.io was used to handle WebSockets for the chat functionality and unit testing was performed using Jest, Vitest and React Testing Library.
 
+## Contributors
+Anna Kucherenko - [Github](https://github.com/AnnaKucherenko1) - [LinkedIn](www.linkedin.com/in/anna-kucherenko1)
+
 ## Screenshots
 
 ![Main page gif](./screenshots/tinPet.gif)
