@@ -33,7 +33,6 @@ const postMsg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             fromUser: userId,
             toUser: correspondingUserId,
         });
-        console.log("All good!");
         return res.status(201).json({ message: "ok", data: insertedMessage });
     }
     catch (error) {

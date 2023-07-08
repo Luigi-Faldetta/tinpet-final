@@ -26,7 +26,6 @@ exports.io = io;
 io.on("connection", (socket) => {
     console.log("A user connected");
     socket.on("newMessage", ({ userId, message, }) => {
-        console.log("new Message from ", `${userId} said ${message}`);
         io.emit("newMessage", `${userId} said ${message.message}`);
     });
     socket.on("disconnect", () => {
