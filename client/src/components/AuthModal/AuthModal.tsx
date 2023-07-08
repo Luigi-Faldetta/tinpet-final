@@ -46,7 +46,6 @@ const AuthModal: React.FC<AuthModalProps> = ({
         password,
         isSignUp
       ).then((response) => {
-        console.log(response.data);
 
         const success = response.status === 201;
 

@@ -1,4 +1,3 @@
-/* Auth Modal */
 .auth-modal {
   position: absolute;
   left: 0;
@@ -13,6 +12,7 @@
   border: solid 1px #025464;
   padding: 40px;
 }
+
 .auth-modal h2 {
   margin-bottom: 2rem;
 }

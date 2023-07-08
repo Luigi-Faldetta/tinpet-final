@@ -1,5 +1,3 @@
-/* Onboarding page */
-
 .onboarding {
   border-top: solid 1px lightgrey;
   padding-top: 1rem;
@@ -49,7 +47,7 @@
   display: none;
 }
 
-.onboarding form input[type="radio"]:checked + label {
+.onboarding form input[type="radio"]:checked+label {
   border: solid 2px #025464;
   color: #025464;
 }

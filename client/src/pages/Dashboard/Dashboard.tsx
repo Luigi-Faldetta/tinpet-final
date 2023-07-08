@@ -108,8 +108,6 @@ const Dashboard: React.FC = () => {
                     >
                       Info about {user.ownerName} and {user.dogName}
                     </label>
-
-                    {/* Put this part before </body> tag */}
                     <input
                       type='checkbox'
                       id={`my_modal_${user._id}`}

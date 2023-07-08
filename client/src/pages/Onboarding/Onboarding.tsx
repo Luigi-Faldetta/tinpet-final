@@ -85,7 +85,6 @@ const Onboarding: React.FC = () => {
         const success = response.status === 200;
         if (success) {
           navigate("/dashboard");
-          console.log("Submitted!!");
         }
       });
     } catch (err) {
@@ -119,9 +118,9 @@ const Onboarding: React.FC = () => {
   return (
     <>
       <Nav
-        setShowModal={() => {}}
+        setShowModal={() => { }}
         showModal={false}
-        setIsSignUp={() => {}}
+        setIsSignUp={() => { }}
         authToken={false}
       />
       <div className='onboarding'>
@@ -212,7 +211,6 @@ const Onboarding: React.FC = () => {
               id='avatar'
               type='url'
               name='avatar'
-              // required={true}
               onChange={handleChange}
             />
             <button type='button' onClick={handleButtonClick} name='avatar'>
