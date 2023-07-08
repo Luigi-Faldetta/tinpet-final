@@ -4,7 +4,7 @@ Tinpet is a web app which allows dog owners to match with each other. They can c
 
 ## Getting Started
 
-Clone the repo
+Clone the repo:
 git clone https://github.com/Luigi-Faldetta/tinpet-final.git
 
 Navigate to the client and server folders:
