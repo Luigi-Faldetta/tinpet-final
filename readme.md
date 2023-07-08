@@ -4,7 +4,27 @@ Tinpet is a web app which allows dog owners to match with each other. They can c
 
 ## Getting Started
 
-On opening the website you can either log in with your email and password or create an accout.
+Clone the repo
+git clone https://github.com/Luigi-Faldetta/tinpet-final.git
+
+Navigate to the client and server folders:
+```console
+cd client // cd server
+```
+Install the required dependencies on each folder:
+```console
+npm install
+```
+Start development server:
+```console
+npm run dev
+```
+Start vite in client:
+```console
+npm run dev
+```
+
+Set up the required environment variables or update and leave the default values for the MongoDB credentials and ports. 
 
 ## Tech Stack
 
@@ -15,6 +35,7 @@ Front-end: TypeScript, Tailwind, daisyUI, React, Vite, Cloudinary.
 Back-end: Node.js, Express, Mongoose, MongoDB, JWT, bcrypt.
 
 Additionally, Socket.io was used to handle WebSockets for the chat functionality and unit testing was performed using Jest, Vitest and React Testing Library.
+
 ## Screenshots
 
 ![Main page gif](./screenshots/tinPet.gif)
