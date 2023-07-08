@@ -1,6 +1,6 @@
-# Tinpet
+# TinPet
 
-Tinpet is a web app which allows dog owners to match with each other. They can connect with like-minded dog owners, allowing them and their dogs to meet up and go on walks together. It's a quick and easy way to find other dog lovers, find friends for your dog and get to know your local dog community.
+TinPet is a web app which allows dog owners to match with each other. They can connect with like-minded dog owners, allowing them and their dogs to meet up and go on walks together. It's a quick and easy way to find other dog lovers, find friends for your dog and get to know your local dog community.
 
 ## Getting Started
 
